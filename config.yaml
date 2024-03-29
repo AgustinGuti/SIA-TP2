@@ -7,5 +7,10 @@ delta_mutation: 10
 same_best_solution: 10
 # Number of decimals to round the best solution
 best_solution_decimals: 2
-
 mutation_rate: 0.05
+# Options are "gen" or "multi_gen"
+mutation_type: "multi_gen"
+# Options are "uniform", "one_point", "two_point" or "annular"
+crossover_type: "two_point"
+# Boltzmann temperature
+temperature: 100

@@ -2,8 +2,8 @@ import numpy as np
 import math
 import yaml
 from common import Character, Variables, VARIABLES_ARRAY
-from crossovers import *
-from mutation import *
+from crossovers import crossover
+from mutation import mutation
 from selection import *
 
 def create_population(population_size, class_name):
@@ -24,7 +24,7 @@ def create_population(population_size, class_name):
 
     return population
 
-def algorithm_iteration(population, population_to_keep, delta_mutation, mutation_rate):
+def algorithm_iteration(population, population_to_keep, delta_mutation, mutation_rate, mutation_type, crossover_type):
     #  Traditional implementation
     population_size = len(population)
     new_children = []
@@ -32,11 +32,9 @@ def algorithm_iteration(population, population_to_keep, delta_mutation, mutation
     while len(new_children) < population_size:
         parent1 = np.random.choice(population)
         parent2 = np.random.choice(population)
-        child1, child2 = one_point_crossover(parent1, parent2)
-        if np.random.rand() < mutation_rate:
-            child1 = gen_mutation(child1, delta_mutation)
-        if np.random.rand() < mutation_rate:
-            child2 = gen_mutation(child2, delta_mutation)
+        child1, child2 = crossover(parent1, parent2, crossover_type)
+        child1 = mutation(child1, mutation_rate, delta_mutation, mutation_type)
+        child2 = mutation(child2, mutation_rate, delta_mutation, mutation_type)
         new_children.append(child1)
         new_children.append(child2)
 
@@ -45,7 +43,7 @@ def algorithm_iteration(population, population_to_keep, delta_mutation, mutation
 
     return new_population
 
-def algorithm(population_size, population_to_keep, class_name, iterations, delta_mutation, mutation_rate, same_best_solution, best_solution_decimals):
+def algorithm(population_size, population_to_keep, class_name, iterations, delta_mutation, mutation_rate, mutation_type, crossover_type, same_best_solution, best_solution_decimals):
     population = create_population(population_size, class_name)
     with open("log.txt", "w") as file:
         file.write(f"Initial population: {population}, AVG: {np.mean([x.performance for x in population])}\n")
@@ -56,7 +54,7 @@ def algorithm(population_size, population_to_keep, class_name, iterations, delta
     iteration = 0
     while same_iterations < same_best_solution:
         iteration += 1
-        population = algorithm_iteration(population, population_to_keep, delta_mutation, mutation_rate)
+        population = algorithm_iteration(population, population_to_keep, delta_mutation, mutation_rate, mutation_type, crossover_type)
         population.sort(key=lambda x: x.performance, reverse=True)
         if round(population[0].performance, best_solution_decimals) == round(best, best_solution_decimals):
             same_iterations += 1
@@ -80,7 +78,10 @@ def main():
     mutation_rate = config["mutation_rate"]
     same_best_solution = config["same_best_solution"]
     best_solution_decimals = config["best_solution_decimals"]
-    result = algorithm(population_size, population_to_keep, class_name, iterations, delta_mutation, mutation_rate, same_best_solution, best_solution_decimals)
+    mutation_type = config["mutation_type"]
+    crossover_type = config["crossover_type"]
+    temperature = config["temperature"]
+    result = algorithm(population_size, population_to_keep, class_name, iterations, delta_mutation, mutation_rate,mutation_type, crossover_type, same_best_solution, best_solution_decimals)
     result.sort(key=lambda x: x.performance, reverse=True)
     # print(result)
 
