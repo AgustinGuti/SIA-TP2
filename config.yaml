@@ -1,0 +1,11 @@
+population_size: 100
+population_to_keep: 50
+class_name: "archer"
+iterations: 50
+delta_mutation: 10
+# Limit for the number of iterations without improvement
+same_best_solution: 10
+# Number of decimals to round the best solution
+best_solution_decimals: 2
+
+mutation_rate: 0.05
