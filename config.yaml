@@ -1,31 +1,37 @@
 algorithm_config:
-  population_size: 100
+  population_size: 200
   class_name: "archer"
   population_to_keep: 50
-  iterations: 50
+  iterations: 1000
   # Limit for the number of iterations without improvement
   same_best_solution: 10
   # Number of decimals to round the best solution
-  best_solution_decimals: 2
+  best_solution_decimals: 1
 
-  crossover_config:
-    # Options are "uniform", "one_point", "two_point" or "annular"
-    type: "two_point"
+crossover_config:
+  # Options are "uniform", "one_point", "two_point" or "annular"
+  type: "two_point"
 
-  mutation_config:
-    # Mutation rate for each individual or gene
-    rate: 0.05
-    # Options are "gen" or "multi_gen"
-    type: "multi_gen"
-    # Delta for the mutation
-    delta: 10
+mutation_config:
+  # Mutation rate for each individual or gene
+  rate: 0.05
+  # Options are "gen" or "multi_gen"
+  type: "gen"
+  # Delta for the mutation
+  delta: 10
 
-  selection_config:
-    # Options are "elite", "roulette", "universal", "boltzmann", "ranking", "probabilistic_tournament", "deterministic_tournament"
-    type: "probabilistic_tournament"
-    # Boltzmann temperature
-    temperature: 100
-    # Tournament quantity selection
-    tournament_size: 100
-    # threshold for the probabilistic tournament selection
-    tournament_threshold: 0.5
+selection_config:
+  # Options are "elite", "roulette", "universal", "boltzmann", "ranking", "probabilistic_tournament", "deterministic_tournament"
+  type: "universal"
+  # Boltzmann temperature
+  temperature: 100
+  # Tournament quantity selection
+  tournament_size: 100
+  # threshold for the probabilistic tournament selection
+  tournament_threshold: 0.5
+
+replacement_config:
+  # Options are "generational", "traditional" or "young_bias"
+  type: "traditional"
+  # Generational gap for the replacement
+  gen_gap: 0.5

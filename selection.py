@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import random
 
 class SelectionConfig:
     def __init__(self, selection_type, population_to_keep, tournament_size=None, threshold=None, temperature=None):
@@ -29,12 +30,12 @@ def _universal_selection(population, config: SelectionConfig):
     return _base_selection(population, config.population_to_keep, 'universal')
 
 def _boltzmann_selection(population, config: SelectionConfig):
-    return _base_selection(population, config.population_to_keep, 'roulette', True, config.temperature)
+    return _base_selection(population, config.population_to_keep, 'bolztmann', config.temperature)
 
 def _deterministic_tournament_selection(population, config: SelectionConfig):
     new_population = []
     while len(new_population) < config.population_to_keep:
-        tournament = np.random.choice(population, config.tournament_size)
+        tournament = random.choices(population, k=config.tournament_size)
         tournament.sort(key=lambda x: x.performance, reverse=True)
         new_population.append(tournament[0])
     return new_population
@@ -42,7 +43,7 @@ def _deterministic_tournament_selection(population, config: SelectionConfig):
 def _probabilistic_tournament_selection(population, config: SelectionConfig):
     new_population = []
     while len(new_population) < config.population_to_keep:
-        pair = np.random.choice(population, 2)
+        pair = random.choices(population, k=2)
         pair.sort(key=lambda x: x.performance, reverse=True)
         if np.random.rand() < config.threshold:
             new_population.append(pair[0])
@@ -85,29 +86,31 @@ def _base_selection(population, population_to_keep, selection_type, temperature=
     randoms = _calculate_randoms(population_size, population_to_keep, random_type_by_selection[selection_type])
     if selection_type == 'ranking': 
         population.sort(key=lambda x: x.performance, reverse=True)
-    for i in range(0, population_size-1):
+    for i in range(0, population_size):
         new_performance = _get_aptitude(population, i, aptitude_type_by_selection[selection_type], temperature, total_performance, average_performance)
         relative_performances.append(new_performance)
         if i == 0:
             accumulated_relative_performances.append(new_performance)
         else:
             accumulated_relative_performances.append(accumulated_relative_performances[i-1]+new_performance)
+
     accum_index = 0
     new_population = []
-    
+
     index = 0
-    while randoms[index] < accumulated_relative_performances[accum_index]:
+    accumulated_relative_performances_len = len(accumulated_relative_performances)
+    while index < accumulated_relative_performances_len and randoms[index] < accumulated_relative_performances[accum_index]:
         new_population.append(population[accum_index])
         accum_index += 1
         index += 1
-
+    
     randoms = randoms[index:]
     for rand in randoms:
         assigned = False
         while not assigned:
             if accumulated_relative_performances[accum_index-1] < rand <= accumulated_relative_performances[accum_index]:
-                new_population.append(population[accum_index])
                 assigned = True
+                new_population.append(population[accum_index])
             else:
                 accum_index += 1
    
