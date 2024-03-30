@@ -1,6 +1,12 @@
 from common import VARIABLES_ARRAY, Variables, Character, fix_variable_limit
 import numpy as np
 
+class CrossoverConfig:
+    def __init__(self, method):
+        if method not in condition_functions.keys():
+            raise ValueError(f"Invalid method. Valid methods are: {condition_functions.keys()}")
+        self.method = method
+
 UNIFORM_PROBABILTY = 0.5
 
 def calculate_point():
@@ -15,8 +21,8 @@ condition_functions = {
     "annular": lambda x, point1, point2, length: not (x < point1 - (len(VARIABLES_ARRAY) - length) or x >= point1)
 }
 
-def crossover(parent1, parent2, method):
-    if method not in condition_functions.keys():
+def crossover(parent1, parent2, config: CrossoverConfig):
+    if config.method not in condition_functions.keys():
         raise ValueError(f"Invalid method. Valid methods are: {condition_functions.keys()}")
     point1 = np.random.randint(0, len(VARIABLES_ARRAY)-1)
     point2 = np.random.randint(0, len(VARIABLES_ARRAY)-1)
@@ -27,7 +33,7 @@ def crossover(parent1, parent2, method):
     new_items_array_1 = []
     new_items_array_2 = []
     for i in range(len(VARIABLES_ARRAY)):
-        if condition_functions[method](i, point1, point2, length):
+        if condition_functions[config.method](i, point1, point2, length):
             new_items_array_1.append(getattr(parent1.variables, VARIABLES_ARRAY[i]))
             new_items_array_2.append(getattr(parent2.variables, VARIABLES_ARRAY[i]))
         else:

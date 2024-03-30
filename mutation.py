@@ -2,13 +2,23 @@ import numpy as np
 
 from common import VARIABLES_ARRAY, Variables, Character, fix_variable_limit
 
-def mutation(character: Character, mutation_rate, delta_mutation, mutation_type):
-    if mutation_type == 'gen':
-        return _gen_mutation(character, mutation_rate, delta_mutation)
-    elif mutation_type == 'multi_gen':
-        return _multigen_mutation(character, mutation_rate, delta_mutation)
+ALLOWED_MUTATION_TYPES = ['gen', 'multi_gen']
+
+class MutationConfig:
+    def __init__(self, mutation_type, mutation_rate, delta_mutation):
+        if mutation_type not in ALLOWED_MUTATION_TYPES:
+            raise ValueError(f"Invalid mutation type. Valid mutation types are: {ALLOWED_MUTATION_TYPES}")
+        self.mutation_type = mutation_type
+        self.mutation_rate = mutation_rate
+        self.delta_mutation = delta_mutation
+
+def mutation(character: Character, config: MutationConfig):
+    if config.mutation_type == 'gen':
+        return _gen_mutation(character, config.mutation_rate, config.delta_mutation)
+    elif config.mutation_type == 'multi_gen':
+        return _multigen_mutation(character, config.mutation_rate, config.delta_mutation)
     else:
-        raise ValueError('Invalid mutation type, please choose between "gen" and "multi_gen"')
+        raise ValueError('Invalid mutation type')
 
 def _mutate_index(character: Character, delta_mutation, index): 
     if index == len(VARIABLES_ARRAY)-1:

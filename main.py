@@ -2,9 +2,17 @@ import numpy as np
 import math
 import yaml
 from common import Character, Variables, VARIABLES_ARRAY
-from crossovers import crossover
-from mutation import mutation
-from selection import *
+from crossovers import crossover, CrossoverConfig
+from mutation import mutation, MutationConfig
+from selection import selection, SelectionConfig
+
+class AlgorithmConfig:
+    def __init__(self, population_size, class_name, selection_config: SelectionConfig, crossover_config: CrossoverConfig, mutation_config: MutationConfig):
+        self.population_size = population_size,
+        self.class_name = class_name,
+        self.selection_config = selection_config,
+        self.crossover_config = crossover_config,
+        self.mutation_config = mutation_config
 
 def create_population(population_size, class_name):
     population = []
@@ -24,27 +32,24 @@ def create_population(population_size, class_name):
 
     return population
 
-def algorithm_iteration(population, population_to_keep, delta_mutation, mutation_rate, mutation_type, crossover_type):
+def algorithm_iteration(population, population_to_keep, config: AlgorithmConfig):
     #  Traditional implementation
-    population_size = len(population)
     new_children = []
     # TODO pueden ser mas o menos hijos y despues cortar menos o mas en la seleccion
-    while len(new_children) < population_size:
+    while len(new_children) < population_to_keep:
         parent1 = np.random.choice(population)
         parent2 = np.random.choice(population)
-        child1, child2 = crossover(parent1, parent2, crossover_type)
-        child1 = mutation(child1, mutation_rate, delta_mutation, mutation_type)
-        child2 = mutation(child2, mutation_rate, delta_mutation, mutation_type)
+        child1, child2 = crossover(parent1, parent2, config.crossover_config)
+        child1 = mutation(child1, config.mutation_config)
+        child2 = mutation(child2, config.mutation_config)
         new_children.append(child1)
         new_children.append(child2)
 
     all_population = population + new_children
-    new_population = elite_selection(all_population, population_size)
+    return selection(all_population, config.selection_config)
 
-    return new_population
-
-def algorithm(population_size, population_to_keep, class_name, iterations, delta_mutation, mutation_rate, mutation_type, crossover_type, same_best_solution, best_solution_decimals):
-    population = create_population(population_size, class_name)
+def algorithm(population_to_keep, iterations, same_best_solution, best_solution_decimals, config: AlgorithmConfig):
+    population = create_population(config.population_size, config.class_name)
     with open("log.txt", "w") as file:
         file.write(f"Initial population: {population}, AVG: {np.mean([x.performance for x in population])}\n")
 
@@ -54,7 +59,7 @@ def algorithm(population_size, population_to_keep, class_name, iterations, delta
     iteration = 0
     while same_iterations < same_best_solution:
         iteration += 1
-        population = algorithm_iteration(population, population_to_keep, delta_mutation, mutation_rate, mutation_type, crossover_type)
+        population = algorithm_iteration(population, population_to_keep, config)
         population.sort(key=lambda x: x.performance, reverse=True)
         if round(population[0].performance, best_solution_decimals) == round(best, best_solution_decimals):
             same_iterations += 1
@@ -70,18 +75,17 @@ def main():
     with open("config.yaml", "r") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
-    population_size = config["population_size"]
     population_to_keep = config["population_to_keep"]
-    class_name = config["class_name"]
     iterations = config["iterations"]
-    delta_mutation = config["delta_mutation"]
-    mutation_rate = config["mutation_rate"]
     same_best_solution = config["same_best_solution"]
     best_solution_decimals = config["best_solution_decimals"]
-    mutation_type = config["mutation_type"]
-    crossover_type = config["crossover_type"]
-    temperature = config["temperature"]
-    result = algorithm(population_size, population_to_keep, class_name, iterations, delta_mutation, mutation_rate,mutation_type, crossover_type, same_best_solution, best_solution_decimals)
+
+    selection_config = SelectionConfig(config["selection_config"]["type"], population_to_keep, config["selection_config"]["tournament_size"], config["selection_config"]["threshold"], config["selection_config"]["temperature"])
+    crossover_config = CrossoverConfig(config["crossover_config"]["type"])
+    mutation_config = MutationConfig(config["mutation_config"]["type"], config["mutation_config"]["mutation_rate"], config["mutation_config"]["delta_mutation"])
+
+    config = AlgorithmConfig(config["population_size"], config["class_name"], selection_config, crossover_config, mutation_config)
+    result = algorithm(population_to_keep,  iterations, same_best_solution, best_solution_decimals, config)
     result.sort(key=lambda x: x.performance, reverse=True)
     # print(result)
 
