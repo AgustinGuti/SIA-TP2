@@ -2,8 +2,12 @@ import math
 import numpy as np
 import random
 
+ALLOWED_SELECTIONS = ['elite', 'roulette', 'ranking', 'universal', 'boltzmann', 'deterministic_tournament', 'probabilistic_tournament']
+
 class SelectionConfig:
     def __init__(self, selection_type, population_to_keep, tournament_size=None, threshold=None, initial_temperature=None, temperature_decay=None, min_temperature=None):
+        if selection_type not in ALLOWED_SELECTIONS:
+            raise ValueError(f'Invalid selection type {selection_type}')
         self.selection_type = selection_type
         self.population_to_keep = population_to_keep
         self.tournament_size = tournament_size
@@ -11,6 +15,12 @@ class SelectionConfig:
         self.initial_temperature = initial_temperature
         self.temperature_decay = temperature_decay
         self.min_temperature = min_temperature
+
+    def __str__(self):
+        return f"SelectionConfig(selection_type={self.selection_type}, population_to_keep={self.population_to_keep}, tournament_size={self.tournament_size}, threshold={self.threshold}, initial_temperature={self.initial_temperature}, temperature_decay={self.temperature_decay}, min_temperature={self.min_temperature})"
+    
+    def __repr__(self):
+        return str(self)
 
 def selection(population, generation, config: SelectionConfig):
     return SELECTION_METHODS[config.selection_type](population, generation, config)
@@ -34,7 +44,7 @@ def _universal_selection(population, generation, config: SelectionConfig):
 def _boltzmann_selection(population, generation, config: SelectionConfig):
     return _base_selection(population, config.population_to_keep, 'bolztmann', config.initial_temperature, config.temperature_decay, config.min_temperature, generation)
 
-def _deterministic_tournament_selection(population, config: SelectionConfig):
+def _deterministic_tournament_selection(population, generation, config: SelectionConfig):
     new_population = []
     while len(new_population) < config.population_to_keep:
         tournament = random.choices(population, k=config.tournament_size)
@@ -42,7 +52,7 @@ def _deterministic_tournament_selection(population, config: SelectionConfig):
         new_population.append(tournament[0])
     return new_population
 
-def _probabilistic_tournament_selection(population, config: SelectionConfig):
+def _probabilistic_tournament_selection(population, generation, config: SelectionConfig):
     new_population = []
     while len(new_population) < config.population_to_keep:
         pair = random.choices(population, k=2)
@@ -112,7 +122,7 @@ def _base_selection(population, population_to_keep, selection_type, initial_temp
     randoms = randoms[index:]
     for rand in randoms:
         assigned = False
-        while not assigned:
+        while not assigned and accum_index < accumulated_relative_performances_len:
             if accumulated_relative_performances[accum_index-1] < rand <= accumulated_relative_performances[accum_index]:
                 assigned = True
                 new_population.append(population[accum_index])

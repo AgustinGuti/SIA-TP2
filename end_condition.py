@@ -1,5 +1,6 @@
 
-ALLOWED_END_CONDITIONS = ['generations', 'structure', 'content', 'optimum']
+# TODO add 'structure'
+ALLOWED_END_CONDITIONS = ['generations', 'content', 'optimum']
 
 
 class EndConditionConfig:
@@ -13,6 +14,12 @@ class EndConditionConfig:
         self.optimum_value = optimum_value
         self.generations_with_same_best = 0
         self.current_best = None
+
+    def __str__(self):
+        return f"EndConditionConfig(type={self.type}, generations_to_check={self.generations_to_check}, generations={self.generations}, optimum_value={self.optimum_value}, tolerance={self.tolerance})"
+
+    def __repr__(self):
+        return str(self)
 
 def should_end(current_generation, current_best, config: EndConditionConfig):
     return END_CONDITIONS[config.type](current_generation, current_best, config)

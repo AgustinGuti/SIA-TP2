@@ -2,15 +2,21 @@ import numpy as np
 
 from common import VARIABLES_ARRAY, Variables, Character, fix_variable_limit
 
-ALLOWED_MUTATION_TYPES = ['gen', 'multi_gen']
+ALLOWED_MUTATIONS = ['gen', 'multi_gen']
 
 class MutationConfig:
     def __init__(self, mutation_type, mutation_rate, delta_mutation):
-        if mutation_type not in ALLOWED_MUTATION_TYPES:
-            raise ValueError(f"Invalid mutation type. Valid mutation types are: {ALLOWED_MUTATION_TYPES}")
+        if mutation_type not in ALLOWED_MUTATIONS:
+            raise ValueError(f"Invalid mutation type. Valid mutation types are: {ALLOWED_MUTATIONS}")
         self.mutation_type = mutation_type
         self.mutation_rate = mutation_rate
         self.delta_mutation = delta_mutation
+
+    def __str__(self):
+        return f"MutationConfig(mutation_type={self.mutation_type}, mutation_rate={self.mutation_rate}, delta_mutation={self.delta_mutation})"
+    
+    def __repr__(self):
+        return str(self)
 
 def mutation(character: Character, config: MutationConfig):
     if config.mutation_type == 'gen':

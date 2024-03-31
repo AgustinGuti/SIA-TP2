@@ -21,6 +21,12 @@ class AlgorithmConfig:
         self.replacement_config = replacement_config
         self.end_condition_config = end_condition_config
 
+    def __str__(self):
+        return f"AlgorithmConfig(population_size={self.population_size}, class_name={self.class_name}, selection_config={self.selection_config}, crossover_config={self.crossover_config}, mutation_config={self.mutation_config}, replacement_config={self.replacement_config}, end_condition_config={self.end_condition_config})"
+    
+    def __repr__(self):
+        return str(self)
+
 def create_population(population_size, class_name):
     population = []
     for _ in range(population_size):
@@ -50,7 +56,7 @@ def algorithm_iteration(population, population_to_keep, generation, config: Algo
 
     return replacement(population, new_children, config.replacement_config)
 
-def algorithm(population_to_keep: list[Character], config: AlgorithmConfig):
+def algorithm(population_to_keep, config: AlgorithmConfig):
     population = create_population(config.population_size, config.class_name)
     with open("log.txt", "w") as file:
         file.write(f"Initial population AVG: {np.mean([x.performance for x in population])}\n")
@@ -58,7 +64,7 @@ def algorithm(population_to_keep: list[Character], config: AlgorithmConfig):
     current_best: Character = max(population, key=lambda x: x.performance)
     generation = 0
     best = current_best, generation
-    while not should_end(generation, current_best, config.end_condition_config):
+    while not should_end(generation, current_best, config.end_condition_config) and generation < 2500: # TODO change hard cap
         generation += 1
         population = algorithm_iteration(population, population_to_keep, generation, config)
         current_best = max(population, key=lambda x: x.performance)
