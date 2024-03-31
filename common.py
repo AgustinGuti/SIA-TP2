@@ -1,6 +1,8 @@
 import numpy as np
 
 VARIABLES_ARRAY = ["strength", "agility", "expertise", "resistance", "life", "height"]
+MAX_ATTRIBUTE_SUM = 150
+
 
 classes_performance_calculation = {
     "warrior": lambda x, y: 0.6*x + 0.4*y, 
@@ -64,8 +66,8 @@ def fix_variable_limit(items):
     height = items[-1]
     items = items[:-1]
     current_sum = sum(items)
-    if current_sum != 150:
-        items = [150 * x/current_sum for x in items]
+    if current_sum != MAX_ATTRIBUTE_SUM:
+        items = [MAX_ATTRIBUTE_SUM * x/current_sum for x in items]
 
     items.append(height)
     return items

@@ -1,45 +1,47 @@
 import numpy as np
 import math
 import yaml
-from common import Character, Variables, VARIABLES_ARRAY
+import random
+from common import Character, Variables, fix_variable_limit, VARIABLES_ARRAY, MAX_ATTRIBUTE_SUM
 from crossovers import crossover, CrossoverConfig
 from mutation import mutation, MutationConfig
 from selection import selection, SelectionConfig
 from replacement import replacement, ReplacementConfig
+from end_condition import should_end, EndConditionConfig
+
 
 class AlgorithmConfig:
-    def __init__(self, population_size, class_name, selection_config: SelectionConfig, crossover_config: CrossoverConfig, mutation_config: MutationConfig, replacement_config: ReplacementConfig):
+    def __init__(self, population_size, class_name, selection_config: SelectionConfig, 
+                 crossover_config: CrossoverConfig, mutation_config: MutationConfig, replacement_config: ReplacementConfig, end_condition_config: EndConditionConfig):
         self.population_size = population_size
         self.class_name = class_name
         self.selection_config = selection_config
         self.crossover_config = crossover_config
         self.mutation_config = mutation_config
         self.replacement_config = replacement_config
+        self.end_condition_config = end_condition_config
 
 def create_population(population_size, class_name):
     population = []
     for _ in range(population_size):
-        points_to_assign = 150
         variables = []
         for i in range(len(VARIABLES_ARRAY)-1):
-            if i == len(VARIABLES_ARRAY)-2:
-                variables.append(points_to_assign)
-            else:
-                variable = np.random.randint(0, points_to_assign)
-                variables.append(variable)
-                points_to_assign -= variable
-
+            variables.append(np.random.randint(0, MAX_ATTRIBUTE_SUM))
         variables.append(np.random.randint(130, 200)/100)
+
+        # Normalize values
+        variables = fix_variable_limit(variables)
         population.append(Character(class_name, Variables(*variables)))
 
     return population
 
-def algorithm_iteration(population, population_to_keep, config: AlgorithmConfig):
-    selected_population = selection(population, config.selection_config)
+def algorithm_iteration(population, population_to_keep, generation, config: AlgorithmConfig):
+    selected_population = selection(population, generation, config.selection_config)
+    random.shuffle(selected_population)
     new_children = []
-    while len(new_children) < population_to_keep:
-        parent1 = np.random.choice(selected_population)
-        parent2 = np.random.choice(selected_population)
+    while len(new_children) < population_to_keep and len(selected_population) > 1:
+        parent1 = selected_population.pop()
+        parent2 = selected_population.pop()
         child1, child2 = crossover(parent1, parent2, config.crossover_config)
         child1 = mutation(child1, config.mutation_config)
         child2 = mutation(child2, config.mutation_config)
@@ -48,47 +50,39 @@ def algorithm_iteration(population, population_to_keep, config: AlgorithmConfig)
 
     return replacement(population, new_children, config.replacement_config)
 
-def algorithm(population_to_keep, iterations, same_best_solution, best_solution_decimals, config: AlgorithmConfig):
+def algorithm(population_to_keep: list[Character], config: AlgorithmConfig):
     population = create_population(config.population_size, config.class_name)
     with open("log.txt", "w") as file:
-        file.write(f"Initial population: {population}, AVG: {np.mean([x.performance for x in population])}\n")
+        file.write(f"Initial population AVG: {np.mean([x.performance for x in population])}\n")
 
-    population.sort(key=lambda x: x.performance, reverse=True)
-    best = population[0].performance
-    same_iterations = 0
-    iteration = 0
-    last_best = 0
-    while same_iterations < same_best_solution and iteration < iterations:
-        iteration += 1
-        population = algorithm_iteration(population, population_to_keep, config)
-        population.sort(key=lambda x: x.performance, reverse=True)
-        if round(population[0].performance, best_solution_decimals) == round(best, best_solution_decimals):
-            same_iterations += 1
-        elif population[0].performance > best:
-            best = population[0].performance
-            same_iterations = 0
+    current_best: Character = max(population, key=lambda x: x.performance)
+    generation = 0
+    best = current_best, generation
+    while not should_end(generation, current_best, config.end_condition_config):
+        generation += 1
+        population = algorithm_iteration(population, population_to_keep, generation, config)
+        current_best = max(population, key=lambda x: x.performance)
+        if current_best.performance > best[0].performance:
+            best = current_best, generation
         with open("log.txt", "a") as file:
-            file.write(f"Iteration: {iteration}, population: {population[0]}, BEST: {population[0].performance:.2f}, DELTA: {population[0].performance - last_best:.2f}, AVG: {np.mean([x.performance for x in population]):.2f}\n")  
-        last_best = population[0].performance
-    return population
+            file.write(f"Iteration: {generation}, best: {current_best}, BEST: {current_best.performance:.2f}, AVG: {np.mean([x.performance for x in population]):.2f}, HSTD: {np.std([x.variables.height for x in population])} \n")  
+    return population, best
 
 def main():
     with open("config.yaml", "r") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
     population_to_keep = config['algorithm_config']["population_to_keep"]
-    iterations = config['algorithm_config']["iterations"]
-    same_best_solution = config['algorithm_config']["same_best_solution"]
-    best_solution_decimals = config['algorithm_config']["best_solution_decimals"]
 
-    selection_config = SelectionConfig(config["selection_config"]["type"], population_to_keep, config["selection_config"]["tournament_size"], config["selection_config"]["tournament_threshold"], config["selection_config"]["temperature"])
+    selection_config = SelectionConfig(config["selection_config"]["type"], population_to_keep, config["selection_config"]["tournament_size"], config["selection_config"]["tournament_threshold"], config["selection_config"]["initial_temperature"], config["selection_config"]["temperature_decay"], config["selection_config"]["min_temperature"])
     crossover_config = CrossoverConfig(config["crossover_config"]["type"])
     mutation_config = MutationConfig(config["mutation_config"]["type"], config["mutation_config"]["rate"], config["mutation_config"]["delta"])
     replacement_config = ReplacementConfig(config["replacement_config"]["type"], config["replacement_config"]["gen_gap"])
+    end_condition_config = EndConditionConfig(config["end_condition_config"]["type"], config["end_condition_config"]["generations_to_check"], config["end_condition_config"]["optimum"], config["end_condition_config"]["tolerance"], config["end_condition_config"]["generations"])
 
-    algorithm_config = AlgorithmConfig(config["algorithm_config"]["population_size"], config['algorithm_config']["class_name"], selection_config, crossover_config, mutation_config, replacement_config)
-    result = algorithm(population_to_keep,  iterations, same_best_solution, best_solution_decimals, algorithm_config)
-    result.sort(key=lambda x: x.performance, reverse=True)
+    algorithm_config = AlgorithmConfig(config["algorithm_config"]["population_size"], config['algorithm_config']["class_name"], selection_config, crossover_config, mutation_config, replacement_config, end_condition_config)
+    result, best = algorithm(population_to_keep, algorithm_config)
+    print(f"Best solution: {best[0]} at generation {best[1]}")
 
 if __name__ == "__main__":
     main()

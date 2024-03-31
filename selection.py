@@ -3,17 +3,19 @@ import numpy as np
 import random
 
 class SelectionConfig:
-    def __init__(self, selection_type, population_to_keep, tournament_size=None, threshold=None, temperature=None):
+    def __init__(self, selection_type, population_to_keep, tournament_size=None, threshold=None, initial_temperature=None, temperature_decay=None, min_temperature=None):
         self.selection_type = selection_type
         self.population_to_keep = population_to_keep
         self.tournament_size = tournament_size
         self.threshold = threshold
-        self.temperature = temperature
+        self.initial_temperature = initial_temperature
+        self.temperature_decay = temperature_decay
+        self.min_temperature = min_temperature
 
-def selection(population, config: SelectionConfig):
-    return SELECTION_METHODS[config.selection_type](population, config)
+def selection(population, generation, config: SelectionConfig):
+    return SELECTION_METHODS[config.selection_type](population, generation, config)
 
-def _elite_selection(population, config: SelectionConfig):
+def _elite_selection(population, generation, config: SelectionConfig):
     population.sort(key=lambda x: x.performance, reverse=True)
     population_size = len(population)
     new_population = []
@@ -23,14 +25,14 @@ def _elite_selection(population, config: SelectionConfig):
     
     return new_population
 
-def _roulette_selection(population, config: SelectionConfig):
+def _roulette_selection(population, generation, config: SelectionConfig):
     return _base_selection(population, config.population_to_keep, config.selection_type)
 
-def _universal_selection(population, config: SelectionConfig):
+def _universal_selection(population, generation, config: SelectionConfig):
     return _base_selection(population, config.population_to_keep, 'universal')
 
-def _boltzmann_selection(population, config: SelectionConfig):
-    return _base_selection(population, config.population_to_keep, 'bolztmann', config.temperature)
+def _boltzmann_selection(population, generation, config: SelectionConfig):
+    return _base_selection(population, config.population_to_keep, 'bolztmann', config.initial_temperature, config.temperature_decay, config.min_temperature, generation)
 
 def _deterministic_tournament_selection(population, config: SelectionConfig):
     new_population = []
@@ -77,15 +79,18 @@ aptitude_type_by_selection = {
     'ranking': 'ranking'
 }
 
-def _base_selection(population, population_to_keep, selection_type, temperature=0):
+def _base_selection(population, population_to_keep, selection_type, initial_temperature=0, temperature_decay=0, min_temperature=0, generation=None):
     population_size = len(population)
     total_performance = sum([x.performance for x in population])
     average_performance = np.average([x.performance for x in population])
     relative_performances = []
     accumulated_relative_performances = []
     randoms = _calculate_randoms(population_size, population_to_keep, random_type_by_selection[selection_type])
+    temperature = 0
     if selection_type == 'ranking': 
         population.sort(key=lambda x: x.performance, reverse=True)
+    elif selection_type == 'bolztmann':
+        temperature = min_temperature + (initial_temperature - min_temperature) * math.exp(-temperature_decay*generation)
     for i in range(0, population_size):
         new_performance = _get_aptitude(population, i, aptitude_type_by_selection[selection_type], temperature, total_performance, average_performance)
         relative_performances.append(new_performance)
@@ -113,7 +118,10 @@ def _base_selection(population, population_to_keep, selection_type, temperature=
                 new_population.append(population[accum_index])
             else:
                 accum_index += 1
-   
+
+    while len(new_population) < population_to_keep:
+        new_population.append(population[-1])
+
     return new_population
 
 def _calculate_randoms(population_size, population_to_keep, selection_type):
