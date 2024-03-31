@@ -38,6 +38,9 @@ class Variables:
 
     def __repr__(self):
         return self.__str__()
+    
+    def equals(self, other, tolerance=0.01):
+        return all([abs(getattr(self, x) - getattr(other, x)) < getattr(self, x)*tolerance for x in VARIABLES_ARRAY])
 
 
 class Character:
