@@ -2,9 +2,19 @@ import numpy as np
 import math
 import yaml
 from common import Character, Variables, VARIABLES_ARRAY
-from crossovers import crossover
-from mutation import mutation
-from selection import *
+from crossovers import crossover, CrossoverConfig
+from mutation import mutation, MutationConfig
+from selection import selection, SelectionConfig
+from replacement import replacement, ReplacementConfig
+
+class AlgorithmConfig:
+    def __init__(self, population_size, class_name, selection_config: SelectionConfig, crossover_config: CrossoverConfig, mutation_config: MutationConfig, replacement_config: ReplacementConfig):
+        self.population_size = population_size
+        self.class_name = class_name
+        self.selection_config = selection_config
+        self.crossover_config = crossover_config
+        self.mutation_config = mutation_config
+        self.replacement_config = replacement_config
 
 def create_population(population_size, class_name):
     population = []
@@ -24,27 +34,22 @@ def create_population(population_size, class_name):
 
     return population
 
-def algorithm_iteration(population, population_to_keep, delta_mutation, mutation_rate, mutation_type, crossover_type):
-    #  Traditional implementation
-    population_size = len(population)
+def algorithm_iteration(population, population_to_keep, config: AlgorithmConfig):
+    selected_population = selection(population, config.selection_config)
     new_children = []
-    # TODO pueden ser mas o menos hijos y despues cortar menos o mas en la seleccion
-    while len(new_children) < population_size:
-        parent1 = np.random.choice(population)
-        parent2 = np.random.choice(population)
-        child1, child2 = crossover(parent1, parent2, crossover_type)
-        child1 = mutation(child1, mutation_rate, delta_mutation, mutation_type)
-        child2 = mutation(child2, mutation_rate, delta_mutation, mutation_type)
+    while len(new_children) < population_to_keep:
+        parent1 = np.random.choice(selected_population)
+        parent2 = np.random.choice(selected_population)
+        child1, child2 = crossover(parent1, parent2, config.crossover_config)
+        child1 = mutation(child1, config.mutation_config)
+        child2 = mutation(child2, config.mutation_config)
         new_children.append(child1)
         new_children.append(child2)
 
-    all_population = population + new_children
-    new_population = elite_selection(all_population, population_size)
+    return replacement(population, new_children, config.replacement_config)
 
-    return new_population
-
-def algorithm(population_size, population_to_keep, class_name, iterations, delta_mutation, mutation_rate, mutation_type, crossover_type, same_best_solution, best_solution_decimals):
-    population = create_population(population_size, class_name)
+def algorithm(population_to_keep, iterations, same_best_solution, best_solution_decimals, config: AlgorithmConfig):
+    population = create_population(config.population_size, config.class_name)
     with open("log.txt", "w") as file:
         file.write(f"Initial population: {population}, AVG: {np.mean([x.performance for x in population])}\n")
 
@@ -52,9 +57,10 @@ def algorithm(population_size, population_to_keep, class_name, iterations, delta
     best = population[0].performance
     same_iterations = 0
     iteration = 0
-    while same_iterations < same_best_solution:
+    last_best = 0
+    while same_iterations < same_best_solution and iteration < iterations:
         iteration += 1
-        population = algorithm_iteration(population, population_to_keep, delta_mutation, mutation_rate, mutation_type, crossover_type)
+        population = algorithm_iteration(population, population_to_keep, config)
         population.sort(key=lambda x: x.performance, reverse=True)
         if round(population[0].performance, best_solution_decimals) == round(best, best_solution_decimals):
             same_iterations += 1
@@ -62,28 +68,27 @@ def algorithm(population_size, population_to_keep, class_name, iterations, delta
             best = population[0].performance
             same_iterations = 0
         with open("log.txt", "a") as file:
-            file.write(f"Iteration: {iteration}, population: {population[0]}, AVG: {np.mean([x.performance for x in population])}\n") 
-
+            file.write(f"Iteration: {iteration}, population: {population[0]}, BEST: {population[0].performance:.2f}, DELTA: {population[0].performance - last_best:.2f}, AVG: {np.mean([x.performance for x in population]):.2f}\n")  
+        last_best = population[0].performance
     return population
 
 def main():
     with open("config.yaml", "r") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
-    population_size = config["population_size"]
-    population_to_keep = config["population_to_keep"]
-    class_name = config["class_name"]
-    iterations = config["iterations"]
-    delta_mutation = config["delta_mutation"]
-    mutation_rate = config["mutation_rate"]
-    same_best_solution = config["same_best_solution"]
-    best_solution_decimals = config["best_solution_decimals"]
-    mutation_type = config["mutation_type"]
-    crossover_type = config["crossover_type"]
-    temperature = config["temperature"]
-    result = algorithm(population_size, population_to_keep, class_name, iterations, delta_mutation, mutation_rate,mutation_type, crossover_type, same_best_solution, best_solution_decimals)
+    population_to_keep = config['algorithm_config']["population_to_keep"]
+    iterations = config['algorithm_config']["iterations"]
+    same_best_solution = config['algorithm_config']["same_best_solution"]
+    best_solution_decimals = config['algorithm_config']["best_solution_decimals"]
+
+    selection_config = SelectionConfig(config["selection_config"]["type"], population_to_keep, config["selection_config"]["tournament_size"], config["selection_config"]["tournament_threshold"], config["selection_config"]["temperature"])
+    crossover_config = CrossoverConfig(config["crossover_config"]["type"])
+    mutation_config = MutationConfig(config["mutation_config"]["type"], config["mutation_config"]["rate"], config["mutation_config"]["delta"])
+    replacement_config = ReplacementConfig(config["replacement_config"]["type"], config["replacement_config"]["gen_gap"])
+
+    algorithm_config = AlgorithmConfig(config["algorithm_config"]["population_size"], config['algorithm_config']["class_name"], selection_config, crossover_config, mutation_config, replacement_config)
+    result = algorithm(population_to_keep,  iterations, same_best_solution, best_solution_decimals, algorithm_config)
     result.sort(key=lambda x: x.performance, reverse=True)
-    # print(result)
 
 if __name__ == "__main__":
     main()
