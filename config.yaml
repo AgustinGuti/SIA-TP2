@@ -1,6 +1,6 @@
 algorithm_config:
   population_size: 1000
-  class_name: "warrior"
+  class_name: "archer"
   population_to_keep: 500
   hard_cap_iterations: 10000
 
@@ -42,11 +42,11 @@ replacement_config:
 
 end_condition_config:
   # Options are "generations", "structure", "content" or "optimum"
-  type: "structure"
+  type: "content"
   # Number of generations
   generations: 500
   # Number of generations without improvement (content or structure)
-  generations_to_check: 5
+  generations_to_check: 50
   # Acceptable percentage of deviation to consider gens equals
   structure_tolerance: 0.01
   # Proportion of the population that must be relevant between two generations

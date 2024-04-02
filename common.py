@@ -59,6 +59,13 @@ class Character:
 
         self.performance = classes_performance_calculation[class_name](attack, defense)
 
+    def json(self):
+        return {
+            'class_name': self.class_name,
+            'variables': self.variables.__dict__,
+            'performance': self.performance
+        }
+
     def __str__(self):
         return f"\n{self.class_name} - {self.performance:8.2f} - {self.variables}"
 

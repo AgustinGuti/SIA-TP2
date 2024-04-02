@@ -11,6 +11,13 @@ class ReplacementConfig:
         self.quantity = quantity
         self.gen_gap = gen_gap
 
+    def json(self):
+        return {
+            'type': self.type,
+            'quantity': self.quantity,
+            'gen_gap': self.gen_gap
+        }
+
     def __str__(self):
         return f"ReplacementConfig(type={self.type}, gen_gap={self.gen_gap})"
     

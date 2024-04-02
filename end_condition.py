@@ -18,6 +18,17 @@ class EndConditionConfig:
         self.last_population = None
         self.same_structure_generations = 0
 
+    def json(self):
+        return {
+            'type': self.type,
+            'generations_to_check': self.generations_to_check,
+            'generations': self.generations,
+            'optimum_value': self.optimum_value,
+            'tolerance': self.tolerance,
+            'structure_tolerance': self.structure_tolerance,
+            'structure_relevant_proportion': self.structure_relevant_proportion
+        }
+
     def __str__(self):
         return f"EndConditionConfig(type={self.type}, generations_to_check={self.generations_to_check}, generations={self.generations}, optimum_value={self.optimum_value}, tolerance={self.tolerance})"
 

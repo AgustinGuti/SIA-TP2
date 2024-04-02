@@ -12,6 +12,13 @@ class MutationConfig:
         self.mutation_rate = mutation_rate
         self.delta_mutation = delta_mutation
 
+    def json(self):
+        return {
+            'mutation_type': self.mutation_type,
+            'mutation_rate': self.mutation_rate,
+            'delta_mutation': self.delta_mutation
+        }
+
     def __str__(self):
         return f"MutationConfig(mutation_type={self.mutation_type}, mutation_rate={self.mutation_rate}, delta_mutation={self.delta_mutation})"
     

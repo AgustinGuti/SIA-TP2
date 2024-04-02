@@ -16,6 +16,17 @@ class SelectionConfig:
         self.temperature_decay = temperature_decay
         self.min_temperature = min_temperature
 
+    def json(self):
+        return {
+            'selection_type': self.selection_type,
+            'population_to_keep': self.population_to_keep,
+            'tournament_size': self.tournament_size,
+            'threshold': self.threshold,
+            'initial_temperature': self.initial_temperature,
+            'temperature_decay': self.temperature_decay,
+            'min_temperature': self.min_temperature
+        }
+
     def __str__(self):
         return f"SelectionConfig(selection_type={self.selection_type}, population_to_keep={self.population_to_keep}, tournament_size={self.tournament_size}, threshold={self.threshold}, initial_temperature={self.initial_temperature}, temperature_decay={self.temperature_decay}, min_temperature={self.min_temperature})"
     

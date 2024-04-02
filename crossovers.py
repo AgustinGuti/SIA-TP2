@@ -9,6 +9,9 @@ class CrossoverConfig:
             raise ValueError(f"Invalid method. Valid methods are: {ALLOWED_CROSSOVERS}")
         self.method = method
 
+    def json(self):
+        return {'method': self.method}
+
     def __str__(self):
         return f"CrossoverConfig(method={self.method})"
     
