@@ -1,0 +1,14 @@
+use_default: False
+param_to_change_group: 'algorithm_config'
+param_to_change_name: 'population_to_keep'
+param_value:  
+  numeric: True
+  numeric_value:
+    min_value: 100
+    max_value: 900
+    step: 100
+  categorical: False
+  categorical_values: ['value1', 'value2', 'value3']
+
+
+

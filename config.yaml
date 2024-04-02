@@ -1,6 +1,7 @@
 algorithm_config:
   population_size: 1000
-  class_name: "archer"
+  # Options are "warrior","archer","defender","assasin"
+  class_name: "warrior"
   population_to_keep: 500
   hard_cap_iterations: 10000
 
