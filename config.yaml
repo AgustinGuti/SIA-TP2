@@ -1,37 +1,57 @@
 algorithm_config:
-  population_size: 200
+  population_size: 1000
   class_name: "archer"
-  population_to_keep: 50
-  iterations: 1000
-  # Limit for the number of iterations without improvement
-  same_best_solution: 10
-  # Number of decimals to round the best solution
-  best_solution_decimals: 1
+  population_to_keep: 500
+  hard_cap_iterations: 10000
 
 crossover_config:
   # Options are "uniform", "one_point", "two_point" or "annular"
-  type: "two_point"
+  type: "uniform"
 
 mutation_config:
   # Mutation rate for each individual or gene
   rate: 0.05
   # Options are "gen" or "multi_gen"
-  type: "gen"
+  type: "multi_gen"
   # Delta for the mutation
   delta: 10
 
 selection_config:
   # Options are "elite", "roulette", "universal", "boltzmann", "ranking", "probabilistic_tournament", "deterministic_tournament"
-  type: "universal"
+  type_1: "probabilistic_tournament"
+  type_2: "boltzmann"
+  ratio_A: 0.5
   # Boltzmann temperature
-  temperature: 100
+  initial_temperature: 50
+  # Boltzmann temperature decay
+  temperature_decay: 0.1
+  # Boltzmann temperature minimum
+  min_temperature: 5
   # Tournament quantity selection
-  tournament_size: 100
-  # threshold for the probabilistic tournament selection
-  tournament_threshold: 0.5
+  tournament_size: 50
+  # threshold for the probabilistic tournament selection [0.5, 1]
+  tournament_threshold: 0.75
 
 replacement_config:
   # Options are "generational", "traditional" or "young_bias"
-  type: "traditional"
+  type_1: "generational"
+  type_2: "young_bias"
+  ratio_B: 0.2
   # Generational gap for the replacement
-  gen_gap: 0.5
+  gen_gap: 0.2
+
+end_condition_config:
+  # Options are "generations", "structure", "content" or "optimum"
+  type: "content"
+  # Number of generations
+  generations: 500
+  # Number of generations without improvement (content or structure)
+  generations_to_check: 50
+  # Acceptable percentage of deviation to consider gens equals
+  structure_tolerance: 0.01
+  # Proportion of the population that must be relevant between two generations
+  structure_relevant_proportion: 0.98
+  # Optimum value
+  optimum: 61.5
+  # Tolerance for optimum
+  tolerance: 0.1

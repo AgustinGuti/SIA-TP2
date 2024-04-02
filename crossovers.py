@@ -1,11 +1,22 @@
 from common import VARIABLES_ARRAY, Variables, Character, fix_variable_limit
 import numpy as np
 
+ALLOWED_CROSSOVERS = ['one_point', 'two_point', 'uniform', 'annular']
+
 class CrossoverConfig:
     def __init__(self, method):
-        if method not in condition_functions.keys():
-            raise ValueError(f"Invalid method. Valid methods are: {condition_functions.keys()}")
+        if method not in ALLOWED_CROSSOVERS:
+            raise ValueError(f"Invalid method. Valid methods are: {ALLOWED_CROSSOVERS}")
         self.method = method
+
+    def json(self):
+        return {'method': self.method}
+
+    def __str__(self):
+        return f"CrossoverConfig(method={self.method})"
+    
+    def __repr__(self):
+        return str(self)
 
 UNIFORM_PROBABILTY = 0.5
 
