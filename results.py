@@ -23,6 +23,9 @@ def main():
     plt.figure()
     grouped = df.groupby('config.selection_config_a.population_to_keep')
     plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
+    plt.xlabel('Population to keep')
+    plt.ylabel('Performance')
+    plt.title('Population to keep vs Performance')
 
     plt.figure()
     grouped = df.groupby('config.population_size')
