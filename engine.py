@@ -170,23 +170,28 @@ def main():
         result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
         print(f"Best solution: {best[0]}")
     else:
-        if run_config['param_value']['numeric']:
-            min_value = run_config['param_value']['numeric_value']['min_value']
-            max_value = run_config['param_value']['numeric_value']['max_value']
-            step = run_config['param_value']['numeric_value']['step']
-            for i in range(min_value, max_value+step, step):
-                print(f"Iteration {i}")
-                config[run_config['param_to_change_group']][run_config['param_to_change_name']] = i
-                algorithm_config, population_to_keep, hard_cap = build_config(config)
-                result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
-        elif run_config['param_value']['categorical']:
-            for i in run_config['param_value']['categorical_values']:
-                config[run_config['param_to_change_group']][run_config['param_to_change_name']] = i
-                algorithm_config, population_to_keep, hard_cap = build_config(config)
-                result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
-                print(f"Iteration {i} finished")
-        else:
-            raise ValueError("Invalid run_config")
+        if len(run_config["class_names"]) == 0:
+            raise ValueError("Invalid class name")
+        for class_name in run_config["class_names"]:
+            config['algorithm_config']["class_name"] = class_name
+            for _ in range(run_config['repetitions']):
+                if run_config['param_value']['numeric']:
+                    min_value = run_config['param_value']['numeric_value']['min_value']
+                    max_value = run_config['param_value']['numeric_value']['max_value']
+                    step = run_config['param_value']['numeric_value']['step']
+                    for i in range(min_value, max_value+step, step):
+                        print(f"Iteration {i}")
+                        config[run_config['param_to_change_group']][run_config['param_to_change_name']] = i
+                        algorithm_config, population_to_keep, hard_cap = build_config(config)
+                        result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
+                elif run_config['param_value']['categorical']:
+                    for i in run_config['param_value']['categorical_values']:
+                        config[run_config['param_to_change_group']][run_config['param_to_change_name']] = i
+                        algorithm_config, population_to_keep, hard_cap = build_config(config)
+                        result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
+                        print(f"Iteration {i} finished")
+                else:
+                    raise ValueError("Invalid run_config")
 
 
 if __name__ == "__main__":
