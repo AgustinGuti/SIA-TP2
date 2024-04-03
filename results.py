@@ -15,7 +15,7 @@ def main():
     df = pd.DataFrame(results)
     df = pd.json_normalize(results)
     
-
+    # Best solution
     plt.figure()   
     grouped = df.groupby('config.class_name')
     plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='o', capsize=6)

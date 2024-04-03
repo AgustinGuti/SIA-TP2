@@ -2,7 +2,7 @@ algorithm_config:
   population_size: 1000
   # Options are "warrior","archer","defender","assasin"
   class_name: "warrior"
-  population_to_keep: 500
+  population_to_keep: 0.5
   hard_cap_iterations: 10000
 
 crossover_config:
