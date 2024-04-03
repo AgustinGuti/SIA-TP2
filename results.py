@@ -31,6 +31,11 @@ def main():
     grouped = df.groupby('config.population_size')
     plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
 
+    # Comparacion de crossover se hace el mejor personaje para una o dos clases
+        
+    # 
+
+
     plt.show()
 
 
