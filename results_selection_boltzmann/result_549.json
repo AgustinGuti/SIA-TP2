@@ -1,0 +1,2617 @@
+{
+    "results": {
+        "best": {
+            "solution": {
+                "class_name": "warrior",
+                "variables": {
+                    "strength": 71.61444882746936,
+                    "agility": 68.51479249974832,
+                    "expertise": 9.870758672782316,
+                    "resistance": 0.0,
+                    "life": 0,
+                    "height": 1.93
+                },
+                "performance": 40.976464952650396
+            },
+            "generation": 108
+        },
+        "last_iterations": [
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 15.640989116548578,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 16.351192045909578,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 16.436843702054844,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 16.78371177023455,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 17.35310967381321,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 17.5764351586398,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 17.755875111190967,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 17.97271682983701,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 18.495585949417727,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 19.00442193456207,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 19.43331820632364,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 19.262708206285946,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 20.161205136168064,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 20.39484830596648,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 20.339748898777536,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 20.073088638777627,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 19.875913284642905,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 20.076002733882664,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 20.35797451127154,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 20.276167663779603,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 21.02094409386606,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 21.489849220259185,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 21.91148764792631,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 21.865153277542824,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 22.420910066039124,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 22.595935682512522,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 23.28563232333571,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 23.699360435267153,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 24.19657888949414,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 24.83622280092517,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 25.357941437751993,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 25.53083097632805,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 25.4089962731941,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 25.341585830201215,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 25.71877607070125,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 25.797476715791834,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 25.844549188802112,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 26.56368371206368,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 26.60164540086918,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 25.941717550267033,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 26.277185424678382,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 26.085894382575866,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 26.13157628587946,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 26.239840464456364,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 26.706159612403162,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 27.255536009814698,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 27.57590808420031,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 27.401550649576464,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.217461663948033,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.75483798240959,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.38012246328348,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.619572730756456,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.943175965105997,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.54583814492411,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.546745429553354,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.78928191905709,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.076670576491285,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.124277781867008,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.08004499896849,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.887315471535903,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.695676187159656,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.686504724084514,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 28.729971829309996,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.138096514144166,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.476583577053294,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.461905651457986,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.815875819071614,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.85849181094408,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.842678077248934,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.813600889112017,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.572776919107366,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.309748554276194,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 29.86099999442359,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.274167318978566,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.636446892389053,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.755663470731783,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.698950415017094,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.693691385828092,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.666678295531135,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.037276274506112,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.313695528311946,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.436828523430812,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.967779165351633,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.501939471427956,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.418816867584304,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.842105623435994,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.227045303005706,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.6862307676281,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.838097494819092,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.390102428082706,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.646455061602296,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.028616588449594,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.31142591238365,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.187066865823894,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.117391172979545,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.627088392759354,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.49529478429379,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.12393186323205,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.14573160637886,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.908299059055846,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.98647658528947,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.955031567191035,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.927098641405536,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.038552481589534,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.48135611000912,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.01289411723659,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.439677647771965,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.54319245503967,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.12838292236848,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.04004360489926,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.710938869541568,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.155591238243904,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.248117887266805,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.872287137397937,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.79062585575826,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.743918310647757,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.841109004393516,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.627827029577034,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.325007307577195,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.839796933849037,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.546199556828274,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.518664888788273,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.871380582190238,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.56230639650018,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.705608561916183,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.496074916242392,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.46022030086845,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.227773826267942,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.211716842771878,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.22624365331207,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.863888649895955,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.086484808285192,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.8737855826131,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.975330106017545,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.249252575961762,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.363139661870772,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.703006761770915,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.439972364602262,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.064543888948155,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.341573974604888,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.517305835447154,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.732562400339972,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.603329966430973,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.14828879971391,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 32.19788396164129,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.440404512211877,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.034921762921325,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.999379343736422,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.829040885451096,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.11664824308799,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.25296633726165,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.284113740692963,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.424227165605316,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.39451609808066,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 31.339176918248633,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.838352487030413,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.91408802971118,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.70501542290495,
+                "generation": 0
+            },
+            {
+                "best": {
+                    "class_name": "warrior",
+                    "variables": {
+                        "strength": 47.72727272727273,
+                        "agility": 49.675324675324674,
+                        "expertise": 51.62337662337662,
+                        "resistance": 0.974025974025974,
+                        "life": 0.0,
+                        "height": 1.81
+                    },
+                    "performance": 30.856339502459043
+                },
+                "mean": 30.462196819867547,
+                "generation": 0
+            }
+        ]
+    },
+    "config": {
+        "population_size": 500,
+        "population_to_keep": 250,
+        "class_name": "warrior",
+        "selection_config_a": {
+            "selection_type": "boltzmann",
+            "population_to_keep": 250,
+            "tournament_size": 50,
+            "threshold": 0.75,
+            "initial_temperature": 40,
+            "temperature_decay": 1.1,
+            "min_temperature": 4
+        },
+        "selection_config_b": {
+            "selection_type": "roulette",
+            "population_to_keep": 0,
+            "tournament_size": 50,
+            "threshold": 0.75,
+            "initial_temperature": 40,
+            "temperature_decay": 1.1,
+            "min_temperature": 4
+        },
+        "selection_config_rate": 1,
+        "crossover_config": {
+            "method": "uniform"
+        },
+        "mutation_config": {
+            "mutation_type": "multi_gen",
+            "mutation_rate": 0.2,
+            "delta_mutation": 15
+        },
+        "replacement_config_a": {
+            "type": "traditional",
+            "quantity": 125,
+            "gen_gap": 0.2
+        },
+        "replacement_config_b": {
+            "type": "young_bias",
+            "quantity": 125,
+            "gen_gap": 0.2
+        },
+        "replacement_config_rate": 0.5,
+        "end_condition_config": {
+            "type": "content",
+            "generations_to_check": 50,
+            "generations": 500,
+            "optimum_value": 61.5,
+            "tolerance": 0.1,
+            "structure_tolerance": 0.01,
+            "structure_relevant_proportion": 0.98
+        }
+    }
+}

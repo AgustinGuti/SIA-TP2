@@ -11,11 +11,11 @@ crossover_config:
 
 mutation_config:
   # Mutation rate for each individual or gene
-  rate: 0.05
+  rate: 0.2
   # Options are "gen" or "multi_gen"
   type: "multi_gen"
   # Delta for the mutation
-  delta: 10
+  delta: 15
 
 selection_config:
   # Options are "elite", "roulette", "universal", "boltzmann", "ranking", "probabilistic_tournament", "deterministic_tournament"

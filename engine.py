@@ -4,9 +4,8 @@ import yaml
 import random
 import os
 import json
-import time
 import itertools
-
+import multiprocessing
 
 from common import Character, Variables, fix_variable_limit, VARIABLES_ARRAY, MAX_ATTRIBUTE_SUM
 from crossovers import crossover, CrossoverConfig
@@ -167,6 +166,20 @@ def build_config(config):
                                         crossover_config, mutation_config, replacement_config_a, replacement_config_b, config["replacement_config"]["ratio_B"], end_condition_config)
     return algorithm_config, population_to_keep, config["algorithm_config"]["hard_cap_iterations"]
 
+
+def run_analysis(args):
+    param_combination, run_config, config, params_names = args
+    print(f"Combination {param_combination}")
+    for _ in range(run_config['repetitions']):
+        print(f"Repetition {_}")
+        for i, param in enumerate(param_combination):
+            config[params_names[i][0]][params_names[i][1]] = param
+
+        algorithm_config, population_to_keep, hard_cap = build_config(config)
+        result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
+
+
+
 def main():
     with open("config.yaml", "r") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
@@ -205,48 +218,13 @@ def main():
 
             num_combinations = np.prod([len(values) for values in params_to_combinate])
             print(f"Number of combinations: {num_combinations}")
+            print(f"Total number of runs: {num_combinations*run_config['repetitions']}")
+            
+            data_for_run_analysis = [(param_combination, run_config, config, params_names) for param_combination in itertools.product(*params_to_combinate)]
 
-            # For each combination of params
-            for param_combination in itertools.product(*params_to_combinate):
-                print(f"Combination {param_combination}")
-                for _ in range(run_config['repetitions']):
-                    print(f"Repetition {_}")
-                    for i, param in enumerate(param_combination):
-                        config[params_names[i][0]][params_names[i][1]] = param
-                    
-                    algorithm_config, population_to_keep, hard_cap = build_config(config)
-                    result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
-                        
-
-            # Lineal, without combination
-            # for param_to_change in run_config['params_to_change']:
-            #     run_with_param(param_to_change, config, population_size, class_name, run_config)
-
-# def run_with_param(param, config, population_size, class_name, run_config):
-#     if param['param_value']['numeric']:
-#         min_value = param['param_value']['numeric_value']['min_value']
-#         max_value = param['param_value']['numeric_value']['max_value']
-#         step = param['param_value']['numeric_value']['step']
-#         if param['param_to_change_name'] == 'population_to_keep':
-#             min_value = int(min_value*population_size)
-#             max_value = int(max_value*population_size)
-#             step = int(step*population_size)
-#         for i in range(min_value, max_value+step, step):
-#             print(f"{param['param_to_change_name']} value: {i}")
-#             config[param['param_to_change_group']][param['param_to_change_name']] = i
-#             for _ in range(run_config['repetitions']):
-#                 print(f"Repetition {_}")
-#                 algorithm_config, population_to_keep, hard_cap = build_config(config)
-#                 result, best = algorithm(population_to_keep, hard_cap, algorithm_config)
-#     else:
-#         for i in param['param_value']['categorical_values']:
-#             print(f"{param['param_to_change_name']} value: {i}")
-#             config[param['param_to_change_group']][param['param_to_change_name']] = i
-#             for _ in range(run_config['repetitions']):
-#                 print(f"Repetition {_}")
-#                 algorithm_config, population_to_keep, hard_cap = build_config(config)
-#                 result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
-#     print(f"Finished running for class {class_name}\n\n")
+            with multiprocessing.Pool() as pool:
+                pool.map(run_analysis, data_for_run_analysis)
+                
 
 if __name__ == "__main__":
     main()
