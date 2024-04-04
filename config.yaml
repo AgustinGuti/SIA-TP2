@@ -1,5 +1,5 @@
 algorithm_config:
-  population_size: 1000
+  population_size: 500
   # Options are "warrior","archer","defender","assasin"
   class_name: "warrior"
   population_to_keep: 0.5
@@ -19,8 +19,8 @@ mutation_config:
 
 selection_config:
   # Options are "elite", "roulette", "universal", "boltzmann", "ranking", "probabilistic_tournament", "deterministic_tournament"
-  type_1: "probabilistic_tournament"
-  type_2: "boltzmann"
+  type_1: "elite"
+  type_2: "roulette"
   ratio_A: 0.5
   # Boltzmann temperature
   initial_temperature: 50
@@ -35,9 +35,9 @@ selection_config:
 
 replacement_config:
   # Options are "generational", "traditional" or "young_bias"
-  type_1: "generational"
+  type_1: "traditional"
   type_2: "young_bias"
-  ratio_B: 0.2
+  ratio_B: 0.5
   # Generational gap for the replacement
   gen_gap: 0.2
 

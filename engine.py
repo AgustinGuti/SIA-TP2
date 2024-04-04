@@ -20,7 +20,7 @@ class AlgorithmData:
         self.population = population
         self.best = best
         self.generation = 0
-        self.last_bests = []
+        self.last_iterations = []
 
     def __str__(self):
         return f"AlgorithmData(population={self.population}, best={self.best}, generation={self.generation})"
@@ -107,13 +107,17 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig):
     current_best: Character = max(population, key=lambda x: x.performance)
     algorithm_data = AlgorithmData(population, (current_best, 0))
     best = current_best, algorithm_data.generation
-    algorithm_data.last_bests.append((current_best, algorithm_data.generation))
+
+    iteration_best = (current_best, algorithm_data.generation)
+    iteration_mean = (np.mean([x.performance for x in algorithm_data.population]), algorithm_data.generation)
+    algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean})
     algorithm_data.best = best
     while not should_end(algorithm_data.generation, algorithm_data.population, current_best, config.end_condition_config) and algorithm_data.generation < hard_cap:
         algorithm_data.generation += 1
         algorithm_data.population = algorithm_iteration(algorithm_data, population_to_keep, config)
         current_best = max(algorithm_data.population, key=lambda x: x.performance)
-        algorithm_data.last_bests.append((current_best, algorithm_data.generation))
+        iteration_mean = (np.mean([x.performance for x in algorithm_data.population]), algorithm_data.generation)
+        algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean})
         if current_best.performance > best[0].performance:
             best = current_best, algorithm_data.generation
             algorithm_data.best = best
@@ -131,8 +135,7 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig):
                 "solution": algorithm_data.best[0].json(),
                 "generation": algorithm_data.best[1]
             },
-            "last_bests": [{"character":x[0].json(), "generation": x[1]} for x in algorithm_data.last_bests],
-            "last_generation": algorithm_data.generation
+            "last_iterations": [{"best": x["best"][0].json(), "mean": x["mean"][0], "generation": x["best"][1]} for x in algorithm_data.last_iterations]
         },
         "config": config.json()
     }

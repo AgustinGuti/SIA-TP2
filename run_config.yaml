@@ -1,6 +1,6 @@
 use_default: False
 class_names: ["warrior"]
-repetitions: 3
+repetitions: 
 params_to_change:
   # - param_to_change_group: "algorithm_config"
   #   param_to_change_name: "population_to_keep"
