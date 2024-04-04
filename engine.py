@@ -4,6 +4,9 @@ import yaml
 import random
 import os
 import json
+import time
+import itertools
+
 
 from common import Character, Variables, fix_variable_limit, VARIABLES_ARRAY, MAX_ATTRIBUTE_SUM
 from crossovers import crossover, CrossoverConfig
@@ -142,6 +145,8 @@ def build_config(config):
     population_to_keep = config['algorithm_config']["population_to_keep"]
     population_size = config['algorithm_config']["population_size"]
 
+    population_to_keep = int(population_to_keep*population_size)
+
     first_selection = round(config["selection_config"]["ratio_A"]*population_to_keep)
     second_selection = population_to_keep - first_selection
     selection_config_a = SelectionConfig(config["selection_config"]["type_1"], first_selection, config["selection_config"]["tournament_size"], config["selection_config"]["tournament_threshold"], config["selection_config"]["initial_temperature"], config["selection_config"]["temperature_decay"], config["selection_config"]["min_temperature"])
@@ -172,50 +177,73 @@ def main():
     else:
         if len(run_config["class_names"]) == 0:
             raise ValueError("Invalid class name")
+        population_size = config['algorithm_config']["population_size"]
+        # Iterate over classes
         for class_name in run_config["class_names"]:
-            
+            print(f"Running for class {class_name}\n\n")
+            config['algorithm_config']["class_name"] = class_name
+            # For each param to change
+            params_to_combinate = []
+            params_names = []
+            for param in run_config['params_to_change']:
+                params_names.append((param['param_to_change_group'], param['param_to_change_name']))
+                if param['param_value']['numeric']:
+                    min_value = param['param_value']['numeric_value']['min_value']*10000
+                    max_value = param['param_value']['numeric_value']['max_value']*10000
+                    step = param['param_value']['numeric_value']['step']*10000
+                    values = range(math.ceil(min_value), math.ceil(max_value)+math.ceil(step), math.ceil(step))                    
+                    values = [math.ceil(value/10000) if math.ceil(value/10000) == value/10000 else value/10000 for value in values]
+                else:
+                    values = param['param_value']['categorical_values']
 
+                params_to_combinate.append(values)
 
-def nested_loops(config, run_config, depth=0):
-    if depth == len(run_config['param_to_change_name']):
-        print(f"Running for class {class_name}\n\n")
-        config['algorithm_config']["class_name"] = class_name    
-        if run_config['param_value']['numeric']:
-        min_value = run_config['param_value']['numeric_value']['min_value'][depth]
-        max_value = run_config['param_value']['numeric_value']['max_value'][depth]
-        step = run_config['param_value']['numeric_value']['step'][depth]
-        if run_config['param_to_change_name'] == 'population_to_keep':
-            min_value = int(min_value*population_size)
-            max_value = int(max_value*population_size)
-            step = int(step*population_size)
-        for i in range(min_value, max_value+step, step):
-            print(f"{run_config['param_to_change_name']} value: {i}")
-            config[run_config['param_to_change_group'][depth]][run_config['param_to_change_name'][depth]] = i
-            algorithm_config, population_to_keep, hard_cap = build_config(config)
-            for _ in range(run_config['repetitions']):
-                print(f"Repetition {_}")
-                result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
-        else:
-            for i in run_config['param_value']['categorical_values'][depth]:
-                print(f"{run_config['param_to_change_name']} value: {i}")
-                config[run_config['param_to_change_group']][run_config['param_to_change_name']] = i
-                algorithm_config, population_to_keep, hard_cap = build_config(config)
+            print(params_to_combinate)
+
+            num_combinations = np.prod([len(values) for values in params_to_combinate])
+            print(f"Number of combinations: {num_combinations}")
+
+            # For each combination of params
+            for param_combination in itertools.product(*params_to_combinate):
+                print(f"Combination {param_combination}")
                 for _ in range(run_config['repetitions']):
                     print(f"Repetition {_}")
+                    for i, param in enumerate(param_combination):
+                        config[params_names[i][0]][params_names[i][1]] = param
+                    
+                    algorithm_config, population_to_keep, hard_cap = build_config(config)
                     result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
-        print(f"Finished running for class {class_name}\n\n")
-    else:
-        population_size = config['algorithm_config']["population_size"]
-        min_value = run_config['param_value']['numeric_value']['min_value'][depth]
-        max_value = run_config['param_value']['numeric_value']['max_value'][depth]
-        step = run_config['param_value']['numeric_value']['step'][depth]
-        if run_config['param_to_change_name'] == 'population_to_keep':
-            min_value = int(min_value*population_size)
-            max_value = int(max_value*population_size)
-            step = int(step*population_size)
-        for _ in range(min_value, max_value+step, step):
-            nested_loops(params, depth + 1)
+                        
 
+            # Lineal, without combination
+            # for param_to_change in run_config['params_to_change']:
+            #     run_with_param(param_to_change, config, population_size, class_name, run_config)
+
+# def run_with_param(param, config, population_size, class_name, run_config):
+#     if param['param_value']['numeric']:
+#         min_value = param['param_value']['numeric_value']['min_value']
+#         max_value = param['param_value']['numeric_value']['max_value']
+#         step = param['param_value']['numeric_value']['step']
+#         if param['param_to_change_name'] == 'population_to_keep':
+#             min_value = int(min_value*population_size)
+#             max_value = int(max_value*population_size)
+#             step = int(step*population_size)
+#         for i in range(min_value, max_value+step, step):
+#             print(f"{param['param_to_change_name']} value: {i}")
+#             config[param['param_to_change_group']][param['param_to_change_name']] = i
+#             for _ in range(run_config['repetitions']):
+#                 print(f"Repetition {_}")
+#                 algorithm_config, population_to_keep, hard_cap = build_config(config)
+#                 result, best = algorithm(population_to_keep, hard_cap, algorithm_config)
+#     else:
+#         for i in param['param_value']['categorical_values']:
+#             print(f"{param['param_to_change_name']} value: {i}")
+#             config[param['param_to_change_group']][param['param_to_change_name']] = i
+#             for _ in range(run_config['repetitions']):
+#                 print(f"Repetition {_}")
+#                 algorithm_config, population_to_keep, hard_cap = build_config(config)
+#                 result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
+#     print(f"Finished running for class {class_name}\n\n")
 
 if __name__ == "__main__":
     main()

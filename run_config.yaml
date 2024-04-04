@@ -1,14 +1,47 @@
 use_default: False
-class_names: ["warrior", "archer", "defender", "assasin"]
-repetitions: 1
-param_to_change_group: ["algorithm_config","algorithm_config"]
-param_to_change_name: ["population_size","population_to_keep"]
-param_value:
-  # True if the parameter is numeric, False if it is categorical
-  numeric: [True,True]
-  numeric_value:
-    min_value: [0.1, 100]
-    max_value: [0.9, 900]
-    step: [0.1,100]
-  categorical_values: [["uniform", "one_point", "two_point","annular"]]
-
+class_names: ["warrior"]
+repetitions: 3
+params_to_change:
+  # - param_to_change_group: "algorithm_config"
+  #   param_to_change_name: "population_to_keep"
+  #   param_value:
+  #     # True if the parameter is numeric, False if it is categorical
+  #     numeric: True
+  #     numeric_value:
+  #       min_value: 0.1
+  #       max_value: 1
+  #       step: 0.5
+  # - param_to_change_group: "algorithm_config"
+  #   param_to_change_name: "population_size"
+  #   param_value:
+  #     numeric: True
+  #     numeric_value:
+  #       min_value: 100
+  #       max_value: 1000
+  #       step: 300
+  - param_to_change_group: "crossover_config"
+    param_to_change_name: "type"
+    param_value:
+      numeric: False
+      categorical_values: ["uniform", "one_point", "two_point", "annular"]
+  - param_to_change_group: "mutation_config"
+    param_to_change_name: "rate"
+    param_value:
+      numeric: True
+      numeric_value:
+        min_value: 0.05
+        max_value: 0.3
+        step: 0.05
+  - param_to_change_group: "mutation_config"
+    param_to_change_name: "type"
+    param_value:
+      numeric: False
+      categorical_values: ["gen", "multi_gen"]
+  - param_to_change_group: "mutation_config"
+    param_to_change_name: "delta"
+    param_value:
+      numeric: True
+      numeric_value:
+        min_value: 1
+        max_value: 20
+        step: 5
