@@ -122,7 +122,7 @@ def show_crossover_mutation():
 def show_selection_tournaments():
     # Tournament performance
     results = []
-    for filename in glob.glob('results/*.json'):
+    for filename in glob.glob('results_selection_tournaments/*.json'):
         with open(filename, 'r') as f:
           results.append(json.load(f))
 
@@ -134,15 +134,23 @@ def show_selection_tournaments():
 
     # Performance by tournament size
     plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
     # Given a threshold
-    filtered = filtered.sort_values('config.selection_config_a.tournament_size')
-    grouped = filtered.groupby('config.selection_config_a.tournament_size')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
+    df = df.sort_values('config.selection_config_a.threshold')
+    for threshold in df['config.selection_config_a.threshold'].unique():
+        filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
+        filtered = filtered[filtered['config.selection_config_a.threshold']==threshold]
+        filtered = filtered.sort_values('config.selection_config_a.tournament_size')
+        grouped = filtered.groupby('config.selection_config_a.tournament_size')
+        means = grouped['results.best.generation'].agg(trimmed_mean)
+        errors = grouped['results.best.generation'].agg(trimmed_std)
+        plt.plot(grouped.groups.keys(), grouped['results.best.generation'].mean())
+        # plt.errorbar(grouped.groups.keys(), grouped['results.best.generation'].mean(), yerr=grouped['results.best.generation'].std(), fmt='-o', capsize=6)
 
+    
     plt.xlabel('Tournament size')
     plt.ylabel('Performance')
-    plt.title(f'Performance by tournament size for class {class_names[CLASS_TO_USE_INDEX]} with threshold 0.8')
+    plt.title(f'Performance by tournament size for class {class_names[CLASS_TO_USE_INDEX]} for each threshold')
+    plt.legend( df['config.selection_config_a.threshold'].unique())
 
     plt.figure()
     filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
@@ -262,10 +270,10 @@ def main():
     plt.show()
 
 def trimmed_mean(x):
-    return x[x.between(x.quantile(.1), x.quantile(.9))].mean()
+    return x[x.between(x.quantile(.2), x.quantile(.8))].mean()
 
 def trimmed_std(x):
-    return x[x.between(x.quantile(.1), x.quantile(.9))].std()
+    return x[x.between(x.quantile(.2), x.quantile(.8))].std()
 
 
 if __name__ == '__main__':

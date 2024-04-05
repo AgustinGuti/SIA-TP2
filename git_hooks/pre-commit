@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Compress the results* folders into a .zip
+zip -r data.zip results*
+
+# Add the results.zip file to the commit
+git add data.zip
