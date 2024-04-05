@@ -7,6 +7,9 @@ import json
 import itertools
 import multiprocessing
 
+from tqdm import tqdm
+
+
 from common import Character, Variables, fix_variable_limit, VARIABLES_ARRAY, MAX_ATTRIBUTE_SUM
 from crossovers import crossover, CrossoverConfig
 from mutation import mutation, MutationConfig
@@ -101,6 +104,7 @@ def algorithm_iteration(algorithm_data: AlgorithmData, population_to_keep, confi
     return replacement_a + replacement_b
 
 def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig):
+
     population = create_population(config.population_size, config.class_name)
 
     current_best: Character = max(population, key=lambda x: x.performance)
@@ -131,7 +135,7 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig):
     json_data = {
         "results": {
             "best": {
-                "solution": algorithm_data.best[0].json(),
+                "solution": algorithm_data.best[0].full_json(),
                 "generation": algorithm_data.best[1]
             },
             "last_iterations": [{"best": x["best"][0].json(), "mean": x["mean"][0], "generation": x["best"][1]} for x in algorithm_data.last_iterations]
@@ -169,9 +173,9 @@ def build_config(config):
 
 def run_analysis(args):
     param_combination, run_config, config, params_names = args
-    print(f"Combination {param_combination}")
+    # print(f"Combination {param_combination}")
     for _ in range(run_config['repetitions']):
-        print(f"Repetition {_}")
+        # print(f"Repetition {_}")
         for i, param in enumerate(param_combination):
             config[params_names[i][0]][params_names[i][1]] = param
 
@@ -196,7 +200,6 @@ def main():
         population_size = config['algorithm_config']["population_size"]
         # Iterate over classes
         for class_name in run_config["class_names"]:
-            print(f"Running for class {class_name}\n\n")
             config['algorithm_config']["class_name"] = class_name
             # For each param to change
             params_to_combinate = []
@@ -213,9 +216,6 @@ def main():
                     values = param['param_value']['categorical_values']
 
                 params_to_combinate.append(values)
-
-            print(params_to_combinate)
-
             num_combinations = np.prod([len(values) for values in params_to_combinate])
             print(f"Number of combinations: {num_combinations}")
             print(f"Total number of runs: {num_combinations*run_config['repetitions']}")
@@ -223,8 +223,9 @@ def main():
             data_for_run_analysis = [(param_combination, run_config, config, params_names) for param_combination in itertools.product(*params_to_combinate)]
 
             with multiprocessing.Pool() as pool:
-                pool.map(run_analysis, data_for_run_analysis)
-                
+                for _ in tqdm(pool.imap_unordered(run_analysis, data_for_run_analysis), total=len(data_for_run_analysis)):
+                    pass
+                        
 
 if __name__ == "__main__":
     main()
