@@ -62,6 +62,12 @@ class Character:
     def json(self):
         return {
             'class_name': self.class_name,
+            'performance': self.performance
+        }
+    
+    def full_json(self):
+        return {
+            'class_name': self.class_name,
             'variables': self.variables.__dict__,
             'performance': self.performance
         }

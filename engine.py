@@ -4,8 +4,10 @@ import yaml
 import random
 import os
 import json
-import time
 import itertools
+import multiprocessing
+
+from tqdm import tqdm
 
 
 from common import Character, Variables, fix_variable_limit, VARIABLES_ARRAY, MAX_ATTRIBUTE_SUM
@@ -102,6 +104,7 @@ def algorithm_iteration(algorithm_data: AlgorithmData, population_to_keep, confi
     return replacement_a + replacement_b
 
 def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig):
+
     population = create_population(config.population_size, config.class_name)
 
     current_best: Character = max(population, key=lambda x: x.performance)
@@ -132,7 +135,7 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig):
     json_data = {
         "results": {
             "best": {
-                "solution": algorithm_data.best[0].json(),
+                "solution": algorithm_data.best[0].full_json(),
                 "generation": algorithm_data.best[1]
             },
             "last_iterations": [{"best": x["best"][0].json(), "mean": x["mean"][0], "generation": x["best"][1]} for x in algorithm_data.last_iterations]
@@ -167,6 +170,20 @@ def build_config(config):
                                         crossover_config, mutation_config, replacement_config_a, replacement_config_b, config["replacement_config"]["ratio_B"], end_condition_config)
     return algorithm_config, population_to_keep, config["algorithm_config"]["hard_cap_iterations"]
 
+
+def run_analysis(args):
+    param_combination, run_config, config, params_names = args
+    # print(f"Combination {param_combination}")
+    for _ in range(run_config['repetitions']):
+        # print(f"Repetition {_}")
+        for i, param in enumerate(param_combination):
+            config[params_names[i][0]][params_names[i][1]] = param
+
+        algorithm_config, population_to_keep, hard_cap = build_config(config)
+        result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
+
+
+
 def main():
     with open("config.yaml", "r") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
@@ -183,7 +200,6 @@ def main():
         population_size = config['algorithm_config']["population_size"]
         # Iterate over classes
         for class_name in run_config["class_names"]:
-            print(f"Running for class {class_name}\n\n")
             config['algorithm_config']["class_name"] = class_name
             # For each param to change
             params_to_combinate = []
@@ -200,53 +216,16 @@ def main():
                     values = param['param_value']['categorical_values']
 
                 params_to_combinate.append(values)
-
-            print(params_to_combinate)
-
             num_combinations = np.prod([len(values) for values in params_to_combinate])
             print(f"Number of combinations: {num_combinations}")
+            print(f"Total number of runs: {num_combinations*run_config['repetitions']}")
+            
+            data_for_run_analysis = [(param_combination, run_config, config, params_names) for param_combination in itertools.product(*params_to_combinate)]
 
-            # For each combination of params
-            for param_combination in itertools.product(*params_to_combinate):
-                print(f"Combination {param_combination}")
-                for _ in range(run_config['repetitions']):
-                    print(f"Repetition {_}")
-                    for i, param in enumerate(param_combination):
-                        config[params_names[i][0]][params_names[i][1]] = param
-                    
-                    algorithm_config, population_to_keep, hard_cap = build_config(config)
-                    result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
+            with multiprocessing.Pool() as pool:
+                for _ in tqdm(pool.imap_unordered(run_analysis, data_for_run_analysis), total=len(data_for_run_analysis)):
+                    pass
                         
-
-            # Lineal, without combination
-            # for param_to_change in run_config['params_to_change']:
-            #     run_with_param(param_to_change, config, population_size, class_name, run_config)
-
-# def run_with_param(param, config, population_size, class_name, run_config):
-#     if param['param_value']['numeric']:
-#         min_value = param['param_value']['numeric_value']['min_value']
-#         max_value = param['param_value']['numeric_value']['max_value']
-#         step = param['param_value']['numeric_value']['step']
-#         if param['param_to_change_name'] == 'population_to_keep':
-#             min_value = int(min_value*population_size)
-#             max_value = int(max_value*population_size)
-#             step = int(step*population_size)
-#         for i in range(min_value, max_value+step, step):
-#             print(f"{param['param_to_change_name']} value: {i}")
-#             config[param['param_to_change_group']][param['param_to_change_name']] = i
-#             for _ in range(run_config['repetitions']):
-#                 print(f"Repetition {_}")
-#                 algorithm_config, population_to_keep, hard_cap = build_config(config)
-#                 result, best = algorithm(population_to_keep, hard_cap, algorithm_config)
-#     else:
-#         for i in param['param_value']['categorical_values']:
-#             print(f"{param['param_to_change_name']} value: {i}")
-#             config[param['param_to_change_group']][param['param_to_change_name']] = i
-#             for _ in range(run_config['repetitions']):
-#                 print(f"Repetition {_}")
-#                 algorithm_config, population_to_keep, hard_cap = build_config(config)
-#                 result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
-#     print(f"Finished running for class {class_name}\n\n")
 
 if __name__ == "__main__":
     main()
