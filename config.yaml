@@ -47,7 +47,7 @@ end_condition_config:
   # Number of generations
   generations: 500
   # Number of generations without improvement (content or structure)
-  generations_to_check: 50
+  generations_to_check: 20
   # Acceptable percentage of deviation to consider gens equals
   structure_tolerance: 0.01
   # Proportion of the population that must be relevant between two generations

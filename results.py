@@ -4,6 +4,7 @@ import glob
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
+import numpy as np
 import os
 
 
@@ -14,7 +15,7 @@ with open('graphs_config.yaml', 'r') as f:
 
 def show_crossover_mutation():
     results = []
-    for filename in glob.glob('results_crossover_mutation/*.json'):
+    for filename in glob.glob('results/results_crossover_mutation/*.json'):
         with open(filename, 'r') as f:
           results.append(json.load(f))
 
@@ -122,7 +123,7 @@ def show_crossover_mutation():
 def show_selection_tournaments():
     # Tournament performance
     results = []
-    for filename in glob.glob('results_selection_tournaments/*.json'):
+    for filename in glob.glob('results/results_selection_tournaments/*.json'):
         with open(filename, 'r') as f:
           results.append(json.load(f))
 
@@ -180,7 +181,7 @@ def show_selection_boltzmann():
     # Graph decay, initial, final independently from each other
 
     results = []
-    for filename in glob.glob('results_selection_boltzmann/*.json'):
+    for filename in glob.glob('results/results_selection_boltzmann/*.json'):
         with open(filename, 'r') as f:
           results.append(json.load(f))
 
@@ -202,6 +203,33 @@ def show_selection_boltzmann():
     plt.xlabel('Initial temperature')
     plt.ylabel('Performance')
     plt.title(f'Performance by initial temperature for class {class_names[CLASS_TO_USE_INDEX]}')
+
+    plt.figure()
+    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
+    # 3D plot - initial, decay vs performance
+    # Use final temperature 4
+    filtered = filtered[filtered['config.selection_config_a.min_temperature'] == 4]
+    X = filtered['config.selection_config_a.initial_temperature'].to_numpy()
+    Y = filtered['config.selection_config_a.temperature_decay'].to_numpy()
+    grouped = filtered.groupby(['config.selection_config_a.initial_temperature', 'config.selection_config_a.temperature_decay'])
+    Z = grouped['results.best.solution.performance'].mean().to_numpy()
+
+    X_unique = np.sort(np.unique(X))
+    Y_unique = np.sort(np.unique(Y))
+    X_grid, Y_grid = np.meshgrid(X_unique, Y_unique)
+    Z_grid = Z.reshape(X_grid.shape)
+
+    # Create 3D plot
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(X_grid, Y_grid, Z_grid)
+    ax.set_xlabel('Initial temperature')
+    ax.set_ylabel('Temperature decay')
+    ax.set_zlabel('Performance')
+    plt.title(f'Performance by initial temperature and decay for class {class_names[CLASS_TO_USE_INDEX]}')
+
+
+
 
     plt.figure()
     filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
@@ -235,6 +263,65 @@ def show_selection_boltzmann():
     plt.ylabel('Performance')
     plt.title(f'Performance by min temperature for class {class_names[CLASS_TO_USE_INDEX]}')
 
+def show_performance_by_generation():
+    # Best individual by generation
+    results = []
+    for filename in glob.glob('results/performance_by_gen/default/*.json'):
+        with open(filename, 'r') as f:
+          results.append(json.load(f))
+    
+    df = pd.DataFrame(results)
+    df = pd.json_normalize(results)
+    class_names = df['results.best.solution.class_name'].unique()
+
+    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
+
+    data_by_crossover = {}
+
+    for crossover_type in filtered['config.crossover_config.method'].unique():
+        by_crossover = filtered[filtered['config.crossover_config.method'] == crossover_type]
+        generations = {}
+        # gen -> (count, sum)
+        for file in by_crossover['results.last_iterations']:
+            for iteration in file:
+                best_performance = iteration['best']['performance']
+                average_performance = iteration['mean']
+                generation = iteration['generation']
+                generation_old = generations[generation] if generation in generations else (0, 0, 0)
+                generations[generation] = (generation_old[0] + 1, generation_old[1] + best_performance, generation_old[2] + average_performance)
+
+        # Average performance by generation
+        average_performances = {k: v[2] / v[0] for k, v in generations.items()}
+        best_performances = {k: v[1] / v[0] for k, v in generations.items()}
+
+        data_by_crossover[crossover_type] = (best_performances, average_performances)
+    
+    for crossover_type, (best_performances, average_performances) in data_by_crossover.items():
+        plt.figure()
+        plt.plot(best_performances.keys(), best_performances.values())   
+        plt.plot(average_performances.keys(), average_performances.values())     
+        plt.xlabel('Generation')
+        plt.ylabel('Performance')
+        plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]} with {crossover_type} crossover')
+        plt.legend(['Best', 'Average'])
+
+    plt.figure()
+    for crossover_type, (best_performances, average_performances) in data_by_crossover.items():
+        plt.plot(best_performances.keys(), best_performances.values())   
+    plt.xlabel('Generation')
+    plt.ylabel('Performance')
+    plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]}')
+    plt.legend(filtered['config.crossover_config.method'].unique())
+
+    plt.figure()
+    for crossover_type, (best_performances, average_performances) in data_by_crossover.items():
+        plt.plot(average_performances.keys(), average_performances.values())    
+
+    plt.xlabel('Generation')
+    plt.ylabel('Performance')
+    plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]}')
+    plt.legend(filtered['config.crossover_config.method'].unique()) 
+   
 
 def main():
     matplotlib.use('TkAgg')
@@ -248,15 +335,17 @@ def main():
     if graph_config['show_selection']['boltzmann']:
         show_selection_boltzmann()
    
+    if graph_config['show_performance_by_generation']:
+        show_performance_by_generation()
     
     # Done figures:
-    # - Mutation rate vs performance
-    # - Delta mutation vs performance
-    # - Performance by generation for each mutation type
+    # - Mutation rate vs performance CHECK
+    # - Delta mutation vs performance CHECK
+    # - Performance by generation for each mutation type CHECK
     # Best individual by generation
 
     # TODO figures:
-    # Average performance by generation PENDING
+    # Average performance by generation ADD WITH OTHER CONFIGS
     # For crossover:
         # - Performance by generation for each crossover type
     # For selection:

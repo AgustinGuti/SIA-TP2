@@ -1,4 +1,5 @@
+show_performance_by_generation: True
 show_crossover_mutation: False
 show_selection:
-  tournaments: True
+  tournaments: False
   boltzmann: False

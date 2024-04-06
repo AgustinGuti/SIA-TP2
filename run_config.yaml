@@ -1,12 +1,13 @@
 use_default: False
+output_dir: "results/performance_by_gen/default"
 class_names: ["warrior"]
-repetitions: 4
+repetitions: 100
 params_to_change:
-  # - param_to_change_group: "crossover_config"
-  #   param_to_change_name: "type"
-  #   param_value:
-  #     numeric: False
-  #     categorical_values: ["uniform", "one_point", "two_point", "annular"]
+  - param_to_change_group: "crossover_config"
+    param_to_change_name: "type"
+    param_value:
+      numeric: False
+      categorical_values: ["one_point", "two_point", "annular", "uniform"]
   # - param_to_change_group: "mutation_config"
   #   param_to_change_name: "rate"
   #   param_value:
@@ -30,36 +31,36 @@ params_to_change:
   #       step: 5
 
   # tournaments
-  - param_to_change_group: "selection_config"
-    param_to_change_name: "type_1"
-    param_value:
-      numeric: False
-      categorical_values:
-        ["probabilistic_tournament", "deterministic_tournament"]
-  - param_to_change_group: "selection_config"
-    param_to_change_name: "ratio_A"
-    param_value:
-      numeric: True
-      numeric_value:
-        min_value: 1
-        max_value: 1
-        step: 1
-  - param_to_change_group: "selection_config"
-    param_to_change_name: "tournament_threshold"
-    param_value:
-      numeric: True
-      numeric_value:
-        min_value: 0.5
-        max_value: 1
-        step: 0.1
-  - param_to_change_group: "selection_config"
-    param_to_change_name: "tournament_size"
-    param_value:
-      numeric: True
-      numeric_value:
-        min_value: 10
-        max_value: 100
-        step: 10
+  # - param_to_change_group: "selection_config"
+  #   param_to_change_name: "type_1"
+  #   param_value:
+  #     numeric: False
+  #     categorical_values:
+  #       ["probabilistic_tournament", "deterministic_tournament"]
+  # - param_to_change_group: "selection_config"
+  #   param_to_change_name: "ratio_A"
+  #   param_value:
+  #     numeric: True
+  #     numeric_value:
+  #       min_value: 1
+  #       max_value: 1
+  #       step: 1
+  # - param_to_change_group: "selection_config"
+  #   param_to_change_name: "tournament_threshold"
+  #   param_value:
+  #     numeric: True
+  #     numeric_value:
+  #       min_value: 0.5
+  #       max_value: 1
+  #       step: 0.1
+  # - param_to_change_group: "selection_config"
+  #   param_to_change_name: "tournament_size"
+  #   param_value:
+  #     numeric: True
+  #     numeric_value:
+  #       min_value: 10
+  #       max_value: 100
+  #       step: 10
 
   # boltzmann
   # - param_to_change_group: "selection_config"

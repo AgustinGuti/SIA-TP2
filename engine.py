@@ -103,7 +103,7 @@ def algorithm_iteration(algorithm_data: AlgorithmData, population_to_keep, confi
 
     return replacement_a + replacement_b
 
-def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig):
+def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig, result_dir="./results"):
 
     population = create_population(config.population_size, config.class_name)
 
@@ -119,6 +119,7 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig):
         algorithm_data.generation += 1
         algorithm_data.population = algorithm_iteration(algorithm_data, population_to_keep, config)
         current_best = max(algorithm_data.population, key=lambda x: x.performance)
+        iteration_best = (current_best, algorithm_data.generation)
         iteration_mean = (np.mean([x.performance for x in algorithm_data.population]), algorithm_data.generation)
         algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean})
         if current_best.performance > best[0].performance:
@@ -126,10 +127,10 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig):
             algorithm_data.best = best
 
     i = 0
-    filename = f"./results/result_{i}.json"
+    filename = f"{result_dir}/result_{i}.json"
     while os.path.exists(filename):
         i += 1
-        filename = f"./results/result_{i}.json"
+        filename = f"{result_dir}/result_{i}.json"
     os.makedirs(os.path.dirname(filename), exist_ok=True)
 
     json_data = {
@@ -170,17 +171,22 @@ def build_config(config):
                                         crossover_config, mutation_config, replacement_config_a, replacement_config_b, config["replacement_config"]["ratio_B"], end_condition_config)
     return algorithm_config, population_to_keep, config["algorithm_config"]["hard_cap_iterations"]
 
+def run_repetition(args):
+    param_combination, config, params_names, result_dir = args
+
+    for i, param in enumerate(param_combination):
+        config[params_names[i][0]][params_names[i][1]] = param
+    algorithm_config, population_to_keep, hard_cap = build_config(config)
+    result, best = algorithm(population_to_keep, hard_cap,  algorithm_config, result_dir)
 
 def run_analysis(args):
-    param_combination, run_config, config, params_names = args
+    param_combination, run_config, config, params_names, result_dir = args
     # print(f"Combination {param_combination}")
-    for _ in range(run_config['repetitions']):
-        # print(f"Repetition {_}")
-        for i, param in enumerate(param_combination):
-            config[params_names[i][0]][params_names[i][1]] = param
-
-        algorithm_config, population_to_keep, hard_cap = build_config(config)
-        result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
+    with multiprocessing.Pool() as pool:
+        for _ in tqdm(pool.imap_unordered(run_repetition, [(param_combination, config, params_names, result_dir) for _ in range(run_config['repetitions'])]), total=run_config['repetitions']):
+            pass
+    # for _ in range(run_config['repetitions']):
+    #     run_repetition((param_combination, config, params_names, result_dir))
 
 
 
@@ -204,27 +210,29 @@ def main():
             # For each param to change
             params_to_combinate = []
             params_names = []
-            for param in run_config['params_to_change']:
-                params_names.append((param['param_to_change_group'], param['param_to_change_name']))
-                if param['param_value']['numeric']:
-                    min_value = param['param_value']['numeric_value']['min_value']*10000
-                    max_value = param['param_value']['numeric_value']['max_value']*10000
-                    step = param['param_value']['numeric_value']['step']*10000
-                    values = range(math.ceil(min_value), math.ceil(max_value)+math.ceil(step), math.ceil(step))                    
-                    values = [math.ceil(value/10000) if math.ceil(value/10000) == value/10000 else value/10000 for value in values]
-                else:
-                    values = param['param_value']['categorical_values']
+            if run_config['params_to_change']:
+                for param in run_config['params_to_change']:
+                    params_names.append((param['param_to_change_group'], param['param_to_change_name']))
+                    if param['param_value']['numeric']:
+                        min_value = param['param_value']['numeric_value']['min_value']*10000
+                        max_value = param['param_value']['numeric_value']['max_value']*10000
+                        step = param['param_value']['numeric_value']['step']*10000
+                        values = range(math.ceil(min_value), math.ceil(max_value)+math.ceil(step), math.ceil(step))                    
+                        values = [math.ceil(value/10000) if math.ceil(value/10000) == value/10000 else value/10000 for value in values]
+                    else:
+                        values = param['param_value']['categorical_values']
 
-                params_to_combinate.append(values)
+                    params_to_combinate.append(values)
             num_combinations = np.prod([len(values) for values in params_to_combinate])
             print(f"Number of combinations: {num_combinations}")
             print(f"Total number of runs: {num_combinations*run_config['repetitions']}")
             
-            data_for_run_analysis = [(param_combination, run_config, config, params_names) for param_combination in itertools.product(*params_to_combinate)]
-
-            with multiprocessing.Pool() as pool:
-                for _ in tqdm(pool.imap_unordered(run_analysis, data_for_run_analysis), total=len(data_for_run_analysis)):
-                    pass
+            data_for_run_analysis = [(param_combination, run_config, config, params_names, run_config['output_dir']) for param_combination in itertools.product(*params_to_combinate)]
+            # with multiprocessing.Pool() as pool:
+            #     for _ in tqdm(pool.imap_unordered(run_analysis, data_for_run_analysis), total=len(data_for_run_analysis)):
+            #         pass
+            for param_combination in data_for_run_analysis:
+                run_analysis(param_combination)
                         
 
 if __name__ == "__main__":
