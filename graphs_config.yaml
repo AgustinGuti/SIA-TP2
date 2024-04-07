@@ -1,5 +1,11 @@
-show_performance_by_generation: True
-show_crossover_mutation: False
+show_crossover_performance: False
+show_mutation:
+  by_type: False
+  by_rate: False
+  by_delta: False
 show_selection:
   tournaments: False
   boltzmann: False
+show_algorithm:
+  by_population_size: False
+  by_population_to_keep: True

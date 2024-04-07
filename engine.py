@@ -6,6 +6,7 @@ import os
 import json
 import itertools
 import multiprocessing
+import re
 
 from tqdm import tqdm
 
@@ -103,6 +104,35 @@ def algorithm_iteration(algorithm_data: AlgorithmData, population_to_keep, confi
 
     return replacement_a + replacement_b
 
+def calculate_population_diversity(population):
+    # SHANNON DIVERSITY INDEX
+    # Count the number of individuals in each group
+    group_counts = {}
+    for individual in population:
+        group = tuple(list(round(x, 0) for x in individual.variables.values()[:-1]) + [round(individual.variables.values()[-1], 2)])
+        if group not in group_counts:
+            group_counts[group] = 0
+        group_counts[group] += 1
+
+    # Calculate the total number of individuals
+    total_count = sum(group_counts.values())
+
+    # Calculate the SDI
+    sdi = 0
+    for count in group_counts.values():
+        proportion = count / total_count
+        sdi -= proportion * np.log(proportion)
+
+    return sdi
+
+
+def get_next_filename(result_dir):
+    filenames = os.listdir(result_dir)
+    indices = [int(re.search(r'result_(\d+).json', filename).group(1)) for filename in filenames if re.search(r'result_(\d+).json', filename)]
+    max_index = max(indices) if indices and len(indices) > 0 else -1
+    return f"{result_dir}/result_{max_index + 1}.json"
+
+
 def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig, result_dir="./results"):
 
     population = create_population(config.population_size, config.class_name)
@@ -111,9 +141,10 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig, result_dir=
     algorithm_data = AlgorithmData(population, (current_best, 0))
     best = current_best, algorithm_data.generation
 
-    iteration_best = (current_best, algorithm_data.generation)
-    iteration_mean = (np.mean([x.performance for x in algorithm_data.population]), algorithm_data.generation)
-    algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean})
+    # iteration_best = (current_best, algorithm_data.generation)
+    # iteration_mean = (np.mean([x.performance for x in algorithm_data.population]), algorithm_data.generation)
+    # diversity = calculate_population_diversity(algorithm_data.population)
+    # algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean, "diversity": diversity})
     algorithm_data.best = best
     while not should_end(algorithm_data.generation, algorithm_data.population, current_best, config.end_condition_config) and algorithm_data.generation < hard_cap:
         algorithm_data.generation += 1
@@ -121,16 +152,14 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig, result_dir=
         current_best = max(algorithm_data.population, key=lambda x: x.performance)
         iteration_best = (current_best, algorithm_data.generation)
         iteration_mean = (np.mean([x.performance for x in algorithm_data.population]), algorithm_data.generation)
-        algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean})
+        diversity = calculate_population_diversity(algorithm_data.population)
+        algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean, "diversity": diversity})
         if current_best.performance > best[0].performance:
             best = current_best, algorithm_data.generation
             algorithm_data.best = best
 
-    i = 0
-    filename = f"{result_dir}/result_{i}.json"
-    while os.path.exists(filename):
-        i += 1
-        filename = f"{result_dir}/result_{i}.json"
+    os.makedirs(result_dir, exist_ok=True)
+    filename = get_next_filename(result_dir)
     os.makedirs(os.path.dirname(filename), exist_ok=True)
 
     json_data = {
@@ -139,7 +168,7 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig, result_dir=
                 "solution": algorithm_data.best[0].full_json(),
                 "generation": algorithm_data.best[1]
             },
-            "last_iterations": [{"best": x["best"][0].json(), "mean": x["mean"][0], "generation": x["best"][1]} for x in algorithm_data.last_iterations]
+            "last_iterations": [{"best": x["best"][0].json(), "mean": x["mean"][0], "generation": x["best"][1], "diversity": x["diversity"]} for x in algorithm_data.last_iterations]
         },
         "config": config.json()
     }
@@ -181,7 +210,6 @@ def run_repetition(args):
 
 def run_analysis(args):
     param_combination, run_config, config, params_names, result_dir = args
-    # print(f"Combination {param_combination}")
     with multiprocessing.Pool() as pool:
         for _ in tqdm(pool.imap_unordered(run_repetition, [(param_combination, config, params_names, result_dir) for _ in range(run_config['repetitions'])]), total=run_config['repetitions']):
             pass
@@ -189,6 +217,15 @@ def run_analysis(args):
     #     run_repetition((param_combination, config, params_names, result_dir))
 
 
+def verify_results_integrity(result_dir):
+    filenames = os.listdir(result_dir)
+    for filename in filenames:
+        with open(f"{result_dir}/{filename}", "r") as file:
+            try:
+                json.load(file)
+            except json.JSONDecodeError:
+                print(f"Invalid JSON file: {filename}")
+                os.remove(f"{result_dir}/{filename}")   
 
 def main():
     with open("config.yaml", "r") as file:
@@ -231,9 +268,13 @@ def main():
             # with multiprocessing.Pool() as pool:
             #     for _ in tqdm(pool.imap_unordered(run_analysis, data_for_run_analysis), total=len(data_for_run_analysis)):
             #         pass
-            for param_combination in data_for_run_analysis:
+            for i, param_combination in enumerate(data_for_run_analysis):
+                print(f"Running combination {i+1}/{len(data_for_run_analysis)}")
                 run_analysis(param_combination)
-                        
+
+    verify_results_integrity(run_config['output_dir'])
+
+              
 
 if __name__ == "__main__":
     main()

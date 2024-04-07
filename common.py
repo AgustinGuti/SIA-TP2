@@ -41,6 +41,9 @@ class Variables:
     
     def equals(self, other, tolerance=0.01):
         return all([abs(getattr(self, x) - getattr(other, x)) < getattr(self, x)*tolerance for x in VARIABLES_ARRAY])
+    
+    def values(self):
+        return [self.strength, self.agility, self.expertise, self.resistance, self.life, self.height]
 
 
 class Character:

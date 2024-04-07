@@ -5,120 +5,100 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
-import os
-
 
 CLASS_TO_USE_INDEX = 0
 
 with open('graphs_config.yaml', 'r') as f:
     graph_config = yaml.load(f,  Loader=yaml.FullLoader)
 
-def show_crossover_mutation():
+def calculate_generations_data(data_iterations):
+    generations = {}
+    # gen -> (count, sum)
+    for file in data_iterations['results.last_iterations']:
+        for iteration in file:
+            best_performance = iteration['best']['performance']
+            average_performance = iteration['mean']
+            generation = iteration['generation']
+            diversity = iteration['diversity']
+            generation_old = generations[generation] if generation in generations else (0, 0, 0, 0)
+            generations[generation] = (generation_old[0] + 1, generation_old[1] + best_performance, generation_old[2] + average_performance, generation_old[3] + diversity)
+
+    # Average performance by generation
+    average_performances = {k: v[2] / v[0] for k, v in generations.items()}
+    best_performances = {k: v[1] / v[0] for k, v in generations.items()}
+    diversity = {k: v[3] / v[0] for k, v in generations.items()}
+    return best_performances, average_performances, diversity
+
+def show_performance_by_attribute(config, attr, attr_name, folder_name=None, hide_individual_graphs=True):
+    if folder_name is None:
+        folder_name = attr
     results = []
-    for filename in glob.glob('results/results_crossover_mutation/*.json'):
+    for filename in glob.glob(f'results/performance_by_gen/{folder_name}/*.json'):
         with open(filename, 'r') as f:
           results.append(json.load(f))
-
+        
     df = pd.DataFrame(results)
     df = pd.json_normalize(results)
-    
-    # Best solution
-    plt.figure()   
-    grouped = df.groupby('config.class_name')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='o', capsize=6)
 
-    plt.figure()
-
-    # Prueba de concepto. Mezclar clases hace que no se entienda el gráfico y agrega ruido. Habria que elegir una clase y listo
-    colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']  # Define a list of colors
     class_names = df['results.best.solution.class_name'].unique()
 
-    for i, name in enumerate(class_names):
-        filtered = df[df['results.best.solution.class_name'] == name]
-        grouped = filtered.groupby('config.population_to_keep')
-        plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6, color=colors[i % len(colors)])
-
-
-    plt.xlabel('Population to keep')
-    plt.ylabel('Performance')
-    plt.title('Population to keep vs Performance for each class')
-    plt.legend(class_names)
+    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
+    filtered = filtered.sort_values(f'{config}.{attr}')
+    grouped = filtered.groupby(f'{config}.{attr}')
 
     plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    grouped = filtered.groupby('config.population_size')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
-    plt.xlabel('Population size')
-    plt.ylabel('Performance')
-    plt.title(f'Population size vs Performance for class {class_names[CLASS_TO_USE_INDEX]}')
-    plt.legend(class_names)
-
-    plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    grouped = filtered.groupby('config.mutation_config.mutation_type')
     plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='o', capsize=6)
-    plt.xlabel('Mutation type')
+    plt.xlabel(attr_name.capitalize())
     plt.ylabel('Performance')
-    plt.title(f'Mutation type vs Performance for class {class_names[CLASS_TO_USE_INDEX]}')
-
+    plt.title(f'{attr_name.capitalize()} vs Performance for class {class_names[CLASS_TO_USE_INDEX]}')
 
     plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    grouped = filtered.groupby('config.crossover_config.method')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='o', capsize=6)
+    plt.errorbar(grouped.groups.keys(), grouped['results.best.generation'].mean(), yerr=grouped['results.best.generation'].std(), fmt='o', capsize=6)
+    plt.xlabel(attr_name.capitalize())
+    plt.ylabel('Generations')
+    plt.title(f'Generations to reach best by {attr_name} for class {class_names[CLASS_TO_USE_INDEX]}')
 
-    plt.xlabel('Crossover method')
-    plt.ylabel('Performance')
-    plt.title(f'Crossover method vs Performance for class {class_names[CLASS_TO_USE_INDEX]}')
-
-    for name in df["config.crossover_config.method"].unique():
-        filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-        by_crossover = filtered[filtered['config.crossover_config.method'] == name]
-        
-        plt.figure()
-        filtered = by_crossover[by_crossover['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-        filtered = filtered.sort_values('config.mutation_config.mutation_rate')
-        grouped = filtered.groupby('config.mutation_config.mutation_rate')
-        plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
+    data_by_attr = {}
+    for attr_type in filtered[f'{config}.{attr}'].unique():
+        by_attr = filtered[filtered[f'{config}.{attr}'] == attr_type]
+        data_by_attr[attr_type] = calculate_generations_data(by_attr)
     
-        plt.xlabel('Mutation rate')
-        plt.ylabel('Performance')
-        plt.title(f'Mutation rate vs Performance for class {class_names[CLASS_TO_USE_INDEX]} with crossover method {name}')
-        plt.legend(by_crossover["config.mutation_config.mutation_rate"].unique())
+    if not hide_individual_graphs:
+        for attr_type, (best_performances, average_performances, diversity) in data_by_attr.items():
+            plt.figure()
+            plt.plot(best_performances.keys(), best_performances.values())   
+            plt.plot(average_performances.keys(), average_performances.values())     
+            plt.xlabel('Generation')
+            plt.ylabel('Performance')
+            plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]} with {attr_type} {attr_name}')
+            plt.legend(['Best', 'Average'])
 
-        plt.figure()
-        filtered = by_crossover[by_crossover['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-        filtered = filtered.sort_values('config.mutation_config.delta_mutation')
-        grouped = filtered.groupby('config.mutation_config.delta_mutation')
-        plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
+    colors = ['b', 'r', 'g', 'c', 'm', 'y', 'tab:orange', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan']
+    colors_by_attr = {attr_type: colors.pop(0) for attr_type in data_by_attr.keys()}
+    plt.figure()
+    for attr_type, (best_performances, average_performances, diversity) in data_by_attr.items():
+        plt.plot(best_performances.keys(), best_performances.values(), colors_by_attr[attr_type])
+    plt.xlabel('Generation')
+    plt.ylabel('Performance')
+    plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]}')
+    plt.legend(filtered[f'{config}.{attr}'].unique())
 
-        plt.xlabel('Delta mutation')
-        plt.ylabel('Performance')
-        plt.title(f'Delta mutation vs Performance for class {class_names[CLASS_TO_USE_INDEX]} with crossover method {name}')
-        plt.legend(by_crossover["config.mutation_config.mutation_type"].unique())
+    plt.figure()
+    for attr_type, (best_performances, average_performances, diversity) in data_by_attr.items():
+        plt.plot(average_performances.keys(), average_performances.values(), colors_by_attr[attr_type])
+    plt.xlabel('Generation')
+    plt.ylabel('Performance')
+    plt.title(f'Average performance by generation for class {class_names[CLASS_TO_USE_INDEX]}')
+    plt.legend(filtered[f'{config}.{attr}'].unique())
 
-        # Best individual by generation
-        # TODO change when we change the data
-        plt.figure()
-        filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-        for mutation_type in filtered['config.mutation_config.mutation_type'].unique():
-            by_mutation = filtered[filtered['config.mutation_config.mutation_type'] == mutation_type]
-            generations = {}
-            for data in by_mutation['results.last_iterations']:
-                for character in data:
-                    performance = character['best']['performance']
-                    generation = character['generation']
-                    generation_old = generations[generation] if generation in generations else (0, 0)
-                    generations[generation] = (generation_old[0] + 1, generation_old[1] + performance)
-            
-            generations = {k: v[1] / v[0] for k, v in generations.items()}
-            
-            plt.plot(generations.keys(), generations.values(), label=mutation_type)       
-            
-        plt.xlabel('Generation')
-        plt.ylabel('Performance')
-        plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]}')
-        plt.legend()
+    # Plot diversity
+    plt.figure()
+    for attr_type, (best_performances, average_performances, diversity) in data_by_attr.items():
+        plt.plot(diversity.keys(), diversity.values(), colors_by_attr[attr_type])
+    plt.xlabel('Generation')
+    plt.ylabel('Diversity')
+    plt.title(f'Shannon diversity by generation for class {class_names[CLASS_TO_USE_INDEX]}')
+    plt.legend(filtered[f'{config}.{attr}'].unique())
 
 def show_selection_tournaments():
     # Tournament performance
@@ -263,91 +243,48 @@ def show_selection_boltzmann():
     plt.ylabel('Performance')
     plt.title(f'Performance by min temperature for class {class_names[CLASS_TO_USE_INDEX]}')
 
-def show_performance_by_generation():
-    # Best individual by generation
-    results = []
-    for filename in glob.glob('results/performance_by_gen/default/*.json'):
-        with open(filename, 'r') as f:
-          results.append(json.load(f))
-    
-    df = pd.DataFrame(results)
-    df = pd.json_normalize(results)
-    class_names = df['results.best.solution.class_name'].unique()
-
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-
-    data_by_crossover = {}
-
-    for crossover_type in filtered['config.crossover_config.method'].unique():
-        by_crossover = filtered[filtered['config.crossover_config.method'] == crossover_type]
-        generations = {}
-        # gen -> (count, sum)
-        for file in by_crossover['results.last_iterations']:
-            for iteration in file:
-                best_performance = iteration['best']['performance']
-                average_performance = iteration['mean']
-                generation = iteration['generation']
-                generation_old = generations[generation] if generation in generations else (0, 0, 0)
-                generations[generation] = (generation_old[0] + 1, generation_old[1] + best_performance, generation_old[2] + average_performance)
-
-        # Average performance by generation
-        average_performances = {k: v[2] / v[0] for k, v in generations.items()}
-        best_performances = {k: v[1] / v[0] for k, v in generations.items()}
-
-        data_by_crossover[crossover_type] = (best_performances, average_performances)
-    
-    for crossover_type, (best_performances, average_performances) in data_by_crossover.items():
-        plt.figure()
-        plt.plot(best_performances.keys(), best_performances.values())   
-        plt.plot(average_performances.keys(), average_performances.values())     
-        plt.xlabel('Generation')
-        plt.ylabel('Performance')
-        plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]} with {crossover_type} crossover')
-        plt.legend(['Best', 'Average'])
-
-    plt.figure()
-    for crossover_type, (best_performances, average_performances) in data_by_crossover.items():
-        plt.plot(best_performances.keys(), best_performances.values())   
-    plt.xlabel('Generation')
-    plt.ylabel('Performance')
-    plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]}')
-    plt.legend(filtered['config.crossover_config.method'].unique())
-
-    plt.figure()
-    for crossover_type, (best_performances, average_performances) in data_by_crossover.items():
-        plt.plot(average_performances.keys(), average_performances.values())    
-
-    plt.xlabel('Generation')
-    plt.ylabel('Performance')
-    plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]}')
-    plt.legend(filtered['config.crossover_config.method'].unique()) 
-   
-
 def main():
     matplotlib.use('TkAgg')
 
-    if graph_config['show_crossover_mutation']:
-        show_crossover_mutation()
-    
+    if graph_config['show_mutation']['by_type']:
+        show_performance_by_attribute('config.mutation_config', 'mutation_type', 'mutation type')
+
+    if graph_config['show_mutation']['by_rate']:
+        show_performance_by_attribute('config.mutation_config', 'mutation_rate', 'mutation rate')
+
+    if graph_config['show_mutation']['by_delta']:
+        show_performance_by_attribute('config.mutation_config', 'delta_mutation', 'delta mutation', "mutation_delta")
+   
+    if graph_config['show_crossover_performance']:
+        show_performance_by_attribute('config.crossover_config', 'method', 'crossover method', 'crossover')
+
+    if graph_config['show_algorithm']['by_population_size']:
+        show_performance_by_attribute('config', 'population_size', 'population size')
+
+    if graph_config['show_algorithm']['by_population_to_keep']:
+        show_performance_by_attribute('config', 'population_to_keep', 'population to keep')
+
+    # TODO migrate to show_performance_by_attribute
     if graph_config['show_selection']['tournaments']:
         show_selection_tournaments()
 
     if graph_config['show_selection']['boltzmann']:
         show_selection_boltzmann()
-   
-    if graph_config['show_performance_by_generation']:
-        show_performance_by_generation()
-    
+
     # Done figures:
     # - Mutation rate vs performance CHECK
     # - Delta mutation vs performance CHECK
     # - Performance by generation for each mutation type CHECK
-    # Best individual by generation
+    # Best individual by generation CHECK
+    # For crossover:
+        # - Performance by generation for each crossover type DONE
+        # - Performance by crossover type DONE
+        # - Generations to reach best by crossover type DONE
+        
 
     # TODO figures:
     # Average performance by generation ADD WITH OTHER CONFIGS
-    # For crossover:
-        # - Performance by generation for each crossover type
+   
     # For selection:
         # - Performance by selections and ratio
         # - Performance by temperature of boltzmann
