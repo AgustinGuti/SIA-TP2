@@ -1,0 +1,13 @@
+active: False
+output_dir: "results/performance_by_gen/population_size"
+class_names: ["warrior"]
+repetitions: 50
+params_to_change:
+  - param_to_change_group: "algorithm_config"
+    param_to_change_name: "population_size"
+    param_value:
+      numeric: True
+      numeric_value:
+        min_value: 100
+        max_value: 2000
+        step: 100

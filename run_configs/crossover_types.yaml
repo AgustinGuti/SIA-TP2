@@ -1,0 +1,10 @@
+active: False
+output_dir: "results/performance_by_gen/crossover"
+class_names: ["warrior"]
+repetitions: 50
+params_to_change:
+  - param_to_change_group: "crossover_config"
+    param_to_change_name: "type"
+    param_value:
+      numeric: False
+      categorical_values: ["uniform", "one_point", "two_point", "annular"]

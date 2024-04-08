@@ -1,0 +1,18 @@
+active: False
+output_dir: "results/performance_by_gen/mutation_rate"
+class_names: ["warrior"]
+repetitions: 50
+params_to_change:
+  - param_to_change_group: "mutation_config"
+    param_to_change_name: "type"
+    param_value:
+      numeric: False
+      categorical_values: ["gen", "multi_gen"]
+  - param_to_change_group: "mutation_config"
+    param_to_change_name: "rate"
+    param_value:
+      numeric: True
+      numeric_value:
+        min_value: 0.05
+        max_value: 0.5
+        step: 0.05

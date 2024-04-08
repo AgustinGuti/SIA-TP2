@@ -1,19 +1,18 @@
 show_crossover_performance: False
 show_mutation:
-  by_type: False
-  by_rate: False
+  by_type: False # B
+  by_rate: False # B
   by_delta: False
 show_selection:
-  # tournaments: False
-  # boltzmann: False
-
-  type: True
-  prob_tournament_size: False
-  det_tournament_size: False
+  type: False
+  tournament_size: False
+  # TODO tournament thresholds
 
   boltzmann_initial_temp: False
   boltzmann_decay: False
   boltzmann_min_temp: False
+
+  combination: True # B
 show_replacement: False
 show_algorithm:
   by_population_size: False

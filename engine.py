@@ -7,6 +7,7 @@ import json
 import itertools
 import multiprocessing
 import re
+import glob
 
 from tqdm import tqdm
 
@@ -105,26 +106,14 @@ def algorithm_iteration(algorithm_data: AlgorithmData, population_to_keep, confi
     return replacement_a + replacement_b
 
 def calculate_population_diversity(population):
-    # SHANNON DIVERSITY INDEX
-    # Count the number of individuals in each group
-    group_counts = {}
-    for individual in population:
-        group = tuple(list(round(x, 0) for x in individual.variables.values()[:-1]) + [round(individual.variables.values()[-1], 2)])
-        if group not in group_counts:
-            group_counts[group] = 0
-        group_counts[group] += 1
+    # Convert the population to a numpy array for easier calculation
+    population_array = np.array([x.variables.values() for x in population])
+    # Calculate the variance of each gene across the population
+    variance_per_gene = np.var(population_array, axis=0)
+    # Calculate the overall diversity (e.g., using the average variance across all genes)
+    overall_diversity = np.mean(variance_per_gene)
 
-    # Calculate the total number of individuals
-    total_count = sum(group_counts.values())
-
-    # Calculate the SDI
-    sdi = 0
-    for count in group_counts.values():
-        proportion = count / total_count
-        sdi -= proportion * np.log(proportion)
-
-    return sdi
-
+    return overall_diversity
 
 def get_next_filename(result_dir):
     filenames = os.listdir(result_dir)
@@ -222,59 +211,69 @@ def verify_results_integrity(result_dir):
     for filename in filenames:
         with open(f"{result_dir}/{filename}", "r") as file:
             try:
-                json.load(file)
+                json_file = json.load(file)
+                # for iteration in json_file["results"]["last_iterations"]:
+                #     print(iteration['generation'])
             except json.JSONDecodeError:
                 print(f"Invalid JSON file: {filename}")
-                os.remove(f"{result_dir}/{filename}")   
+                os.remove(f"{result_dir}/{filename}")
+            except KeyError:
+                print(f"Invalid JSON file: {filename}")
+                os.remove(f"{result_dir}/{filename}")
 
 def main():
     with open("config.yaml", "r") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
-    with open("run_config.yaml", "r") as file:
-        run_config = yaml.load(file, Loader=yaml.FullLoader)
 
-    if(run_config["use_default"]):
+
+    used_run_config = False
+
+    for filename in glob.glob(f'run_configs/*.yaml'):
+        with open(filename, 'r') as file:
+            run_config = yaml.load(file, Loader=yaml.FullLoader)
+            if (run_config["active"]):
+                if len(run_config["class_names"]) == 0:
+                    raise ValueError("Invalid class name")
+                population_size = config['algorithm_config']["population_size"]
+                # Iterate over classes
+                for class_name in run_config["class_names"]:
+                    config['algorithm_config']["class_name"] = class_name
+                    # For each param to change
+                    params_to_combinate = []
+                    params_names = []
+                    if run_config['params_to_change']:
+                        for param in run_config['params_to_change']:
+                            params_names.append((param['param_to_change_group'], param['param_to_change_name']))
+                            if param['param_value']['numeric']:
+                                min_value = param['param_value']['numeric_value']['min_value']*10000
+                                max_value = param['param_value']['numeric_value']['max_value']*10000
+                                step = param['param_value']['numeric_value']['step']*10000
+                                values = range(math.ceil(min_value), math.ceil(max_value)+math.ceil(step), math.ceil(step))                    
+                                values = [math.ceil(value/10000) if math.ceil(value/10000) == value/10000 else value/10000 for value in values]
+                            else:
+                                values = param['param_value']['categorical_values']
+
+                            params_to_combinate.append(values)
+                    num_combinations = np.prod([len(values) for values in params_to_combinate])
+                    print(f"File: {filename}")
+                    print(f"Number of combinations: {num_combinations}")
+                    print(f"Total number of runs: {num_combinations*run_config['repetitions']}")
+                    
+                    data_for_run_analysis = [(param_combination, run_config, config, params_names, run_config['output_dir']) for param_combination in itertools.product(*params_to_combinate)]
+                    for i, param_combination in enumerate(data_for_run_analysis):
+                        print(f"Running combination {i+1}/{len(data_for_run_analysis)}")
+                        run_analysis(param_combination)
+
+                verify_results_integrity(run_config['output_dir'])
+                used_run_config = True
+
+    if not used_run_config:
         algorithm_config, population_to_keep, hard_cap = build_config(config)
         result, best = algorithm(population_to_keep, hard_cap,  algorithm_config)
         print(f"Best solution: {best[0]}")
-    else:
-        if len(run_config["class_names"]) == 0:
-            raise ValueError("Invalid class name")
-        population_size = config['algorithm_config']["population_size"]
-        # Iterate over classes
-        for class_name in run_config["class_names"]:
-            config['algorithm_config']["class_name"] = class_name
-            # For each param to change
-            params_to_combinate = []
-            params_names = []
-            if run_config['params_to_change']:
-                for param in run_config['params_to_change']:
-                    params_names.append((param['param_to_change_group'], param['param_to_change_name']))
-                    if param['param_value']['numeric']:
-                        min_value = param['param_value']['numeric_value']['min_value']*10000
-                        max_value = param['param_value']['numeric_value']['max_value']*10000
-                        step = param['param_value']['numeric_value']['step']*10000
-                        values = range(math.ceil(min_value), math.ceil(max_value)+math.ceil(step), math.ceil(step))                    
-                        values = [math.ceil(value/10000) if math.ceil(value/10000) == value/10000 else value/10000 for value in values]
-                    else:
-                        values = param['param_value']['categorical_values']
-
-                    params_to_combinate.append(values)
-            num_combinations = np.prod([len(values) for values in params_to_combinate])
-            print(f"Number of combinations: {num_combinations}")
-            print(f"Total number of runs: {num_combinations*run_config['repetitions']}")
-            
-            data_for_run_analysis = [(param_combination, run_config, config, params_names, run_config['output_dir']) for param_combination in itertools.product(*params_to_combinate)]
-            # with multiprocessing.Pool() as pool:
-            #     for _ in tqdm(pool.imap_unordered(run_analysis, data_for_run_analysis), total=len(data_for_run_analysis)):
-            #         pass
-            for i, param_combination in enumerate(data_for_run_analysis):
-                print(f"Running combination {i+1}/{len(data_for_run_analysis)}")
-                run_analysis(param_combination)
-
-    verify_results_integrity(run_config['output_dir'])
 
               
 
 if __name__ == "__main__":
     main()
+    # verify_results_integrity("./results/performance_by_gen/selection_ratios")

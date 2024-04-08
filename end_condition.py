@@ -63,7 +63,7 @@ def _structure_end_condition(current_generation, population, current_best, confi
     return False
 
 def _content_end_condition(current_generation, population, current_best, config: EndConditionConfig):
-    if config.current_best and current_best.performance <= config.current_best.performance:
+    if config.current_best and round(current_best.performance, 2) <= round(config.current_best.performance, 2):
         config.generations_with_same_best += 1
     else:
         config.generations_with_same_best = 0

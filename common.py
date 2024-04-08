@@ -85,6 +85,9 @@ def fix_variable_limit(items):
     height = items[-1]
     items = items[:-1]
     current_sum = sum(items)
+    if current_sum == 0:
+        items = [1 for x in items]
+        current_sum = len(items)
     if current_sum != MAX_ATTRIBUTE_SUM:
         items = [MAX_ATTRIBUTE_SUM * x/current_sum for x in items]
 

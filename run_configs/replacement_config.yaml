@@ -1,0 +1,18 @@
+active: False
+output_dir: "results/performance_by_gen/selection_type"
+class_names: ["warrior"]
+repetitions: 50
+params_to_change:
+  - param_to_change_group: "replacement_config"
+    param_to_change_name: "type_1"
+    param_value:
+      numeric: False
+      categorical_values: ["generational", "traditional", "young_bias"]
+  - param_to_change_group: "replacement_config"
+    param_to_change_name: "ratio_B"
+    param_value:
+      numeric: True
+      numeric_value:
+        min_value: 1
+        max_value: 1
+        step: 0.1

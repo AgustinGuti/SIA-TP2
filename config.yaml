@@ -19,9 +19,9 @@ mutation_config:
 
 selection_config:
   # Options are "elite", "roulette", "universal", "boltzmann", "ranking", "probabilistic_tournament", "deterministic_tournament"
-  type_1: "boltzmann"
+  type_1: "elite"
   type_2: "roulette"
-  ratio_A: 1
+  ratio_A: 0.5
   # Boltzmann temperature
   initial_temperature: 30
   # Boltzmann temperature decay
@@ -35,11 +35,11 @@ selection_config:
 
 replacement_config:
   # Options are "generational", "traditional" or "young_bias"
-  type_1: "generational"
+  type_1: "traditional"
   type_2: "young_bias"
-  ratio_B: 1
+  ratio_B: 0.5
   # Generational gap for the replacement
-  gen_gap: 0.2
+  gen_gap: 0.5
 
 end_condition_config:
   # Options are "generations", "structure", "content" or "optimum"
