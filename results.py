@@ -264,12 +264,34 @@ def main():
     if graph_config['show_algorithm']['by_population_to_keep']:
         show_performance_by_attribute('config', 'population_to_keep', 'population to keep')
 
-    # TODO migrate to show_performance_by_attribute
-    if graph_config['show_selection']['tournaments']:
-        show_selection_tournaments()
+    if graph_config['show_replacement']:
+        show_performance_by_attribute('config.replacement_config_a', 'gen_gap', 'generational gap', 'replacement_config')
 
-    if graph_config['show_selection']['boltzmann']:
-        show_selection_boltzmann()
+    # TODO check implementation and result analysis. Something is off
+    if graph_config['show_selection']['type']:
+        show_performance_by_attribute('config.selection_config_a', 'selection_type', 'selection type')
+
+    if graph_config['show_selection']['boltzmann_initial_temp']:
+        show_performance_by_attribute('config.selection_config_a', 'initial_temperature', 'initial temperature', 'boltzmann_initial_temp')
+
+    if graph_config['show_selection']['boltzmann_decay']:
+        show_performance_by_attribute('config.selection_config_a', 'temperature_decay', 'temperature decay', 'boltzmann_decay')
+
+    if graph_config['show_selection']['boltzmann_min_temp']:
+        show_performance_by_attribute('config.selection_config_a', 'min_temperature', 'min temperature', 'boltzmann_min_temp')
+
+    if graph_config['show_selection']['prob_tournament_size']:
+        show_performance_by_attribute('config.selection_config_a', 'tournament_size', 'tournament size', 'prob_tournament_size')
+
+    if graph_config['show_selection']['det_tournament_size']:
+        show_performance_by_attribute('config.selection_config_a', 'tournament_size', 'tournament size', 'det_tournament_size')
+
+    # TODO migrate to show_performance_by_attribute
+    # if graph_config['show_selection']['tournaments']:
+    #     show_selection_tournaments()
+
+    # if graph_config['show_selection']['boltzmann']:
+    #     show_selection_boltzmann()
 
     # Done figures:
     # - Mutation rate vs performance CHECK

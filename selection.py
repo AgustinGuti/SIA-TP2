@@ -125,7 +125,7 @@ def _base_selection(population, population_to_keep, selection_type, initial_temp
 
     index = 0
     accumulated_relative_performances_len = len(accumulated_relative_performances)
-    while index < accumulated_relative_performances_len and randoms[index] < accumulated_relative_performances[accum_index]:
+    while index < accumulated_relative_performances_len and index < len(randoms) and randoms[index] < accumulated_relative_performances[accum_index]:
         new_population.append(population[accum_index])
         accum_index += 1
         index += 1

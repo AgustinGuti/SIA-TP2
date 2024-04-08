@@ -4,8 +4,17 @@ show_mutation:
   by_rate: False
   by_delta: False
 show_selection:
-  tournaments: False
-  boltzmann: False
+  # tournaments: False
+  # boltzmann: False
+
+  type: True
+  prob_tournament_size: False
+  det_tournament_size: False
+
+  boltzmann_initial_temp: False
+  boltzmann_decay: False
+  boltzmann_min_temp: False
+show_replacement: False
 show_algorithm:
   by_population_size: False
-  by_population_to_keep: True
+  by_population_to_keep: False
