@@ -12,7 +12,7 @@ show_selection:
   boltzmann_decay: False
   boltzmann_min_temp: False
 
-  combination: False # B
+  combination: True # B
 show_replacement: False
 show_algorithm:
   by_population_size: False

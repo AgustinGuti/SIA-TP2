@@ -69,47 +69,52 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
         if not hide_individual_graphs:
             for attr_type, (best_performances, average_performances, diversity) in data_by_attr.items():
                 plt.figure()
-                plt.plot(best_performances.keys(), best_performances.values())   
-                plt.plot(average_performances.keys(), average_performances.values())     
+                plt.plot(best_performances.keys(), best_performances.values(), label='Best')   
+                plt.plot(average_performances.keys(), average_performances.values(), label='Average')     
                 plt.xlabel('Generation')
                 plt.ylabel('Performance')
                 plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]} with {attr_type} {attr_name}{extra_title}')
-                plt.savefig(f'graphs/performance_by_generation_{attr}_{attr_type}_{class_names[CLASS_TO_USE_INDEX]}.png')
                 plt.legend(['Best', 'Average'])
+                plt.savefig(f'graphs/performance_by_generation_{attr}_{attr_type}_{class_names[CLASS_TO_USE_INDEX]}.png')
+                
 
         plt.figure()
         for attr_type, (best_performances, average_performances, diversity) in data_by_attr.items():
-            plt.plot(best_performances.keys(), best_performances.values(), colors_by_attr[attr_type])
+            plt.plot(best_performances.keys(), best_performances.values(), colors_by_attr[attr_type], label=attr_type)
         plt.xlabel('Generation')
         plt.ylabel('Performance')
         plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
-        plt.savefig(f'graphs/performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
-        legend = plt.legend(filtered[f'{config}.{attr}'].unique())
+        legend = plt.legend(filtered[f'{config}.{attr}'].unique(), loc='upper right', bbox_to_anchor=(1,1))
         legend.set_title(f'{attr_name.capitalize()}')
+        plt.tight_layout()
+        plt.savefig(f'graphs/performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
+        
 
         plt.figure()
         for attr_type, (best_performances, average_performances, diversity) in data_by_attr.items():
-            plt.plot(average_performances.keys(), average_performances.values(), colors_by_attr[attr_type])
+            plt.plot(average_performances.keys(), average_performances.values(), colors_by_attr[attr_type], label=attr_type)
         plt.xlabel('Generation')
         plt.ylabel('Performance')
         plt.title(f'Average performance by generation for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
-        plt.savefig(f'graphs/average_performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
         legend = plt.legend(filtered[f'{config}.{attr}'].unique())
         legend.set_title(f'{attr_name.capitalize()}')
+        plt.savefig(f'graphs/average_performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
+        
 
     # Plot diversity
     plt.figure()
     for attr_type, (best_performances, average_performances, diversity) in data_by_attr.items():       
-        plt.plot(diversity.keys(), diversity.values(), colors_by_attr[attr_type])
+        plt.plot(diversity.keys(), diversity.values(), colors_by_attr[attr_type], label=attr_type)
 
     plt.xlabel('Generation')
     plt.ylabel('Diversity')
    
     plt.title(f'Diversity by generation for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
-    plt.savefig(f'graphs/diversity_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
     legends = [f'{x}' for i, x in enumerate(filtered[f'{config}.{attr}'].unique())]
     legend = plt.legend(legends)
     legend.set_title(f'{attr_name.capitalize()}')
+    plt.savefig(f'graphs/diversity_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
+    
 
 def show_performance_by_attribute(config, attr, attr_name, folder_name=None, hide_individual_graphs=True):
     if folder_name is None:
