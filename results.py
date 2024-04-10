@@ -48,14 +48,14 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
         plt.xlabel(attr_name.capitalize())
         plt.ylabel('Performance')
         plt.title(f'{attr_name.capitalize()} vs Performance for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
-        plt.savefig(f'graphs/performance_by_{attr}.png')
+        plt.savefig(f'graphs/performance_by_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
 
         plt.figure()
         plt.errorbar(grouped.groups.keys(), grouped['results.best.generation'].mean(), yerr=grouped['results.best.generation'].std(), fmt='o', capsize=6)
         plt.xlabel(attr_name.capitalize())
         plt.ylabel('Generations')
         plt.title(f'Generations to reach best by {attr_name} for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
-        plt.savefig(f'graphs/generations_to_reach_best_{attr}.png')
+        plt.savefig(f'graphs/generations_to_reach_best_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
 
     data_by_attr = {}
     for attr_type in filtered[f'{config}.{attr}'].unique():
@@ -74,6 +74,7 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
                 plt.xlabel('Generation')
                 plt.ylabel('Performance')
                 plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]} with {attr_type} {attr_name}{extra_title}')
+                plt.savefig(f'graphs/performance_by_generation_{attr}_{attr_type}_{class_names[CLASS_TO_USE_INDEX]}.png')
                 plt.legend(['Best', 'Average'])
 
         plt.figure()
@@ -82,6 +83,7 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
         plt.xlabel('Generation')
         plt.ylabel('Performance')
         plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
+        plt.savefig(f'graphs/performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
         legend = plt.legend(filtered[f'{config}.{attr}'].unique())
         legend.set_title(f'{attr_name.capitalize()}')
 
@@ -91,6 +93,7 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
         plt.xlabel('Generation')
         plt.ylabel('Performance')
         plt.title(f'Average performance by generation for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
+        plt.savefig(f'graphs/average_performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
         legend = plt.legend(filtered[f'{config}.{attr}'].unique())
         legend.set_title(f'{attr_name.capitalize()}')
 
@@ -103,6 +106,7 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
     plt.ylabel('Diversity')
    
     plt.title(f'Diversity by generation for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
+    plt.savefig(f'graphs/diversity_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
     legends = [f'{x}' for i, x in enumerate(filtered[f'{config}.{attr}'].unique())]
     legend = plt.legend(legends)
     legend.set_title(f'{attr_name.capitalize()}')
@@ -173,6 +177,7 @@ def show_selection_combinations():
     plt.xlabel('Ratio')
     plt.ylabel('Selection combination')
     plt.title(f'Performance by selection combination for class {class_names[CLASS_TO_USE_INDEX]}')
+    plt.savefig(f'graphs/performance_by_selection_combinations_{class_names[CLASS_TO_USE_INDEX]}.png')
 
     # Now I want to create a graph for each combination, with the performance by generation
     
@@ -187,6 +192,8 @@ def show_best_evolution_one(filename):
 
     df = pd.DataFrame(data)
     df = pd.json_normalize(data)
+
+    class_names = df['results.best.solution.class_name'].unique()
 
     generations_data = {}
     for all_generations in df['results.last_iterations']:
@@ -226,6 +233,7 @@ def show_best_evolution_one(filename):
     lines2, labels2 = ax2.get_legend_handles_labels()
     ax2.legend(lines + lines2, labels + labels2)
     plt.title('Best individual by generation')
+    plt.savefig(f'graphs/best_evolution_one_{class_names[CLASS_TO_USE_INDEX]}.png')
 
 
 def show_best_evolution(foldername):
