@@ -7,7 +7,6 @@ import matplotlib
 import numpy as np
 
 import seaborn as sns
-import seaborn.matrix as smatrix
 from scipy.optimize import curve_fit
 
 CLASS_TO_USE_INDEX = 0
@@ -49,12 +48,14 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
         plt.xlabel(attr_name.capitalize())
         plt.ylabel('Performance')
         plt.title(f'{attr_name.capitalize()} vs Performance for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
+        plt.savefig(f'graphs/performance_by_{attr}.png')
 
         plt.figure()
         plt.errorbar(grouped.groups.keys(), grouped['results.best.generation'].mean(), yerr=grouped['results.best.generation'].std(), fmt='o', capsize=6)
         plt.xlabel(attr_name.capitalize())
         plt.ylabel('Generations')
         plt.title(f'Generations to reach best by {attr_name} for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
+        plt.savefig(f'graphs/generations_to_reach_best_{attr}.png')
 
     data_by_attr = {}
     for attr_type in filtered[f'{config}.{attr}'].unique():
@@ -118,150 +119,7 @@ def show_performance_by_attribute(config, attr, attr_name, folder_name=None, hid
     df = pd.json_normalize(results)
 
     _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_individual_graphs)
-   
-def show_selection_tournaments():
-    # Tournament performance
-    results = []
-    for filename in glob.glob('results/results_selection_tournaments/*.json'):
-        with open(filename, 'r') as f:
-          results.append(json.load(f))
-
-    df = pd.DataFrame(results)
-    df = pd.json_normalize(results)
-
-    class_names = df['results.best.solution.class_name'].unique()
-
-
-    # Performance by tournament size
-    plt.figure()
-    # Given a threshold
-    df = df.sort_values('config.selection_config_a.threshold')
-    for threshold in df['config.selection_config_a.threshold'].unique():
-        filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-        filtered = filtered[filtered['config.selection_config_a.threshold']==threshold]
-        filtered = filtered.sort_values('config.selection_config_a.tournament_size')
-        grouped = filtered.groupby('config.selection_config_a.tournament_size')
-        means = grouped['results.best.generation'].agg(trimmed_mean)
-        errors = grouped['results.best.generation'].agg(trimmed_std)
-        plt.plot(grouped.groups.keys(), grouped['results.best.generation'].mean())
-        # plt.errorbar(grouped.groups.keys(), grouped['results.best.generation'].mean(), yerr=grouped['results.best.generation'].std(), fmt='-o', capsize=6)
-
-    
-    plt.xlabel('Tournament size')
-    plt.ylabel('Performance')
-    plt.title(f'Performance by tournament size for class {class_names[CLASS_TO_USE_INDEX]} for each threshold')
-    plt.legend( df['config.selection_config_a.threshold'].unique())
-
-    plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    # Given a tournament size
-    filtered = filtered.sort_values('config.selection_config_a.tournament_size')
-    grouped = filtered.groupby('config.selection_config_a.tournament_size')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
-
-    plt.xlabel('Tournament size')
-    plt.ylabel('Performance')
-    plt.title(f'Performance by tournament size for class {class_names[CLASS_TO_USE_INDEX]}')
-
-    # Performance by threshold
-    plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    filtered = filtered.sort_values('config.selection_config_a.threshold')
-    grouped = filtered.groupby('config.selection_config_a.threshold')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
-
-    plt.xlabel('Threshold')
-    plt.ylabel('Performance')
-    plt.title(f'Performance by threshold for class {class_names[CLASS_TO_USE_INDEX]}')
-
-def show_selection_boltzmann():
-    # Boltzmann performance
-    # TODO REDO. Graphing params that influence each other, no good data. 
-    # Graph decay, initial, final independently from each other
-
-    results = []
-    for filename in glob.glob('results/results_selection_boltzmann/*.json'):
-        with open(filename, 'r') as f:
-          results.append(json.load(f))
-
-    df = pd.DataFrame(results)
-    df = pd.json_normalize(results)
-
-    class_names = df['results.best.solution.class_name'].unique()
-
-    plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    # Use final temperature 4
-    filtered = filtered[filtered['config.selection_config_a.min_temperature'] == 4]
-    # Use decay 0.6
-    filtered = filtered[filtered['config.selection_config_a.temperature_decay'] == 0.5]
-    filtered = filtered.sort_values('config.selection_config_a.initial_temperature')
-    grouped = filtered.groupby('config.selection_config_a.initial_temperature')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
-
-    plt.xlabel('Initial temperature')
-    plt.ylabel('Performance')
-    plt.title(f'Performance by initial temperature for class {class_names[CLASS_TO_USE_INDEX]}')
-
-    plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    # 3D plot - initial, decay vs performance
-    # Use final temperature 4
-    filtered = filtered[filtered['config.selection_config_a.min_temperature'] == 4]
-    X = filtered['config.selection_config_a.initial_temperature'].to_numpy()
-    Y = filtered['config.selection_config_a.temperature_decay'].to_numpy()
-    grouped = filtered.groupby(['config.selection_config_a.initial_temperature', 'config.selection_config_a.temperature_decay'])
-    Z = grouped['results.best.solution.performance'].mean().to_numpy()
-
-    X_unique = np.sort(np.unique(X))
-    Y_unique = np.sort(np.unique(Y))
-    X_grid, Y_grid = np.meshgrid(X_unique, Y_unique)
-    Z_grid = Z.reshape(X_grid.shape)
-
-    # Create 3D plot
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.plot_surface(X_grid, Y_grid, Z_grid)
-    ax.set_xlabel('Initial temperature')
-    ax.set_ylabel('Temperature decay')
-    ax.set_zlabel('Performance')
-    plt.title(f'Performance by initial temperature and decay for class {class_names[CLASS_TO_USE_INDEX]}')
-
-
-
-
-    plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    filtered = filtered.sort_values('config.selection_config_a.initial_temperature')
-    grouped = filtered.groupby('config.selection_config_a.initial_temperature')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
-
-    plt.xlabel('Initial temperature')
-    plt.ylabel('Performance')
-    plt.title(f'Performance by initial temperature for class {class_names[CLASS_TO_USE_INDEX]}')
-    
-
-    plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    filtered = filtered.sort_values('config.selection_config_a.temperature_decay')
-    grouped = filtered.groupby('config.selection_config_a.temperature_decay')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
-
-    plt.xlabel('Temperature decay')
-    plt.ylabel('Performance')
-    plt.title(f'Performance by temperature decay for class {class_names[CLASS_TO_USE_INDEX]}')
-
-
-    plt.figure()
-    filtered = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
-    filtered = filtered.sort_values('config.selection_config_a.min_temperature')
-    grouped = filtered.groupby('config.selection_config_a.min_temperature')
-    plt.errorbar(grouped.groups.keys(), grouped['results.best.solution.performance'].mean(), yerr=grouped['results.best.solution.performance'].std(), fmt='-o', capsize=6)
-
-    plt.xlabel('Temperature decay')
-    plt.ylabel('Performance')
-    plt.title(f'Performance by min temperature for class {class_names[CLASS_TO_USE_INDEX]}')
-
+              
 def show_selection_combinations():
     results = []
     for filename in glob.glob('results/performance_by_gen/selection_ratios/*.json'):
@@ -322,6 +180,121 @@ def show_selection_combinations():
         partial = df[(df['config.selection_config_a.selection_type'] == key[0]) & (df['config.selection_config_b.selection_type'] == key[1])]
         _show_performance_by_attribute_from_data(partial, 'config', 'selection_ratio', 'ratio', only_diversity=True, extra_title=f'{key[0]} and {key[1]}')
 
+def show_best_evolution_one(filename):
+
+    with open(filename, 'r') as f:
+        data = json.load(f)
+
+    df = pd.DataFrame(data)
+    df = pd.json_normalize(data)
+
+    generations_data = {}
+    for all_generations in df['results.last_iterations']:
+        for generation in all_generations:
+            generations_data[generation["generation"]] = (generation['best']['performance'], generation['best']['variables'])
+
+    plt.figure()
+    ax1 = plt.subplot()
+    ax2 = ax1.twinx()
+
+    variables_by_generation = {}
+    performance_by_generation = {}
+    for generation, (performance, variables) in generations_data.items():
+        performance_by_generation[generation] = performance
+        for variable in variables.keys():
+            if variable not in variables_by_generation:
+                variables_by_generation[variable] = []
+            variables_by_generation[variable].append(variables[variable])
+            
+    colors = ['b', 'r', 'g', 'c', 'm', 'y', 'tab:orange', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan', 'tab:blue', 'tab:red', 'tab:green', 'tab:orange', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan', 'tab:blue', 'tab:red', 'tab:green', 'tab:orange', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan', 'tab:blue', 'tab:red', 'tab:green', 'tab:orange', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan', 'tab:blue', 'tab:red', 'tab:green', 'tab:orange', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan', 'tab:blue', 'tab:red', 'tab:green', 'tab:orange', 'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive', 'tab:cyan', 'tab:blue', 'tab:red', 'tab:green']
+
+    i = 0
+    ax1.plot(list(performance_by_generation.keys()), list(performance_by_generation.values()), linestyle=':', label='Performance', color='black')
+
+    for variable, values in list(variables_by_generation.items())[:-1]:
+        ax1.plot(list(generations_data.keys()), values, '-o', label=variable, color=colors[i])
+        i += 1 
+
+    for variable, values in list(variables_by_generation.items())[-1:]:
+        ax2.plot(list(generations_data.keys()), values, '--o', label=variable, color=colors[i]) 
+
+
+    plt.xlabel('Generation')
+    ax1.set_ylabel('Attributes Values')
+    ax2.set_ylabel('Height Values')
+    lines, labels = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax2.legend(lines + lines2, labels + labels2)
+    plt.title('Best individual by generation')
+
+
+def show_best_evolution(foldername):
+
+    results = []
+    for filename in glob.glob(f'results/performance_by_gen/{foldername}/*.json'):
+        with open(filename, 'r') as f:
+          results.append(json.load(f))
+
+    all_df = pd.DataFrame(results)
+    all_df = pd.json_normalize(results)
+
+    class_names = all_df['results.best.solution.class_name'].unique()
+    for class_name in class_names:
+        df = all_df[all_df['results.best.solution.class_name'] == class_name]
+
+        generations_data = {}
+        for all_generations in df['results.last_iterations']:
+            for generation in all_generations:
+                generation_old = generations_data[generation["generation"]] if generation["generation"] in generations_data else (0, {}, 0)
+                variables_sum = {}
+                for variable in generation['best']['variables'].keys():
+                    if variable in generation_old[1]:
+                        variables_sum[variable] = generation_old[1][variable] + generation['best']['variables'][variable]
+                    else:
+                        variables_sum[variable] = generation['best']['variables'][variable]
+
+                generations_data[generation["generation"]] = (generation_old[0] + generation['best']['performance'], variables_sum, generation_old[2] + 1) 
+
+
+        for generation in generations_data.keys():
+            average_variables = {k: v / generations_data[generation][2] for k, v in generations_data[generation][1].items()}
+            generations_data[generation] = (generations_data[generation][0] / generations_data[generation][2], average_variables)
+
+        plt.figure()
+        ax1 = plt.subplot()
+        ax2 = ax1.twinx()
+
+        variables_by_generation = {}
+        performance_by_generation = {}
+        for generation, (performance, variables) in generations_data.items():
+            performance_by_generation[generation] = performance
+            for variable in variables.keys():
+                if variable not in variables_by_generation:
+                    variables_by_generation[variable] = []
+                variables_by_generation[variable].append(variables[variable])
+                
+        colors = ['b', 'r', 'g', 'c', 'm', 'y']
+
+        i = 0
+        ax1.plot(list(performance_by_generation.keys()), list(performance_by_generation.values()), linestyle=':', label='Performance', color='black')
+
+        for variable, values in list(variables_by_generation.items())[:-1]:
+            ax1.plot(list(generations_data.keys()), values, '-o', label=variable, color=colors[i])
+            i += 1 
+
+        for variable, values in list(variables_by_generation.items())[-1:]:
+            ax2.plot(list(generations_data.keys()), values, '--o', label=variable, color=colors[i]) 
+
+
+        plt.xlabel('Generation')
+        ax1.set_ylabel('Attributes Values')
+        ax2.set_ylabel('Height Values')
+        lines, labels = ax1.get_legend_handles_labels()
+        lines2, labels2 = ax2.get_legend_handles_labels()
+        ax2.legend(lines + lines2, labels + labels2)
+        plt.title(f'Best individual by generation for {class_name}')
+        plt.savefig(f'graphs/best_evolution_{foldername}_{class_name}.png')
+
 
 def main():
     matplotlib.use('TkAgg')
@@ -344,8 +317,9 @@ def main():
     if graph_config['show_algorithm']['by_population_to_keep']:
         show_performance_by_attribute('config', 'population_to_keep', 'population to keep', 'population_to_keep')
 
+    # TODO fix data and graphs
     if graph_config['show_replacement']:
-        show_performance_by_attribute('config.replacement_config_a', 'gen_gap', 'generational gap', 'replacement_config')
+        show_performance_by_attribute('config.replacement_config_a', 'type', 'type', 'replacement_config')
 
     # TODO check implementation and result analysis. Something is off
     if graph_config['show_selection']['type']:
@@ -363,17 +337,13 @@ def main():
     if graph_config['show_selection']['tournament_size']:
         show_performance_by_attribute('config.selection_config_a', 'tournament_size', 'tournament size', 'tournament_size')
 
-
     if graph_config['show_selection']['combination']:
         show_selection_combinations()
 
+    if graph_config['show_algorithm']['best_evolution']:
+        show_best_evolution("best_evolution")
+        show_best_evolution_one("results/result_1.json")
 
-    # TODO migrate to show_performance_by_attribute
-    # if graph_config['show_selection']['tournaments']:
-    #     show_selection_tournaments()
-
-    # if graph_config['show_selection']['boltzmann']:
-    #     show_selection_boltzmann()
 
     # Done figures:
     # - Mutation rate vs performance CHECK

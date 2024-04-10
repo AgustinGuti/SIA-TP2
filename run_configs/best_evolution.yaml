@@ -1,0 +1,5 @@
+active: False
+output_dir: "results/performance_by_gen/best_evolution"
+class_names: ["archer", "defender", "assasin"]
+repetitions: 50
+params_to_change:

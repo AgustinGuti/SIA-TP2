@@ -1,8 +1,8 @@
 algorithm_config:
-  population_size: 500
+  population_size: 1000
   # Options are "warrior","archer","defender","assasin"
   class_name: "warrior"
-  population_to_keep: 0.5
+  population_to_keep: 0.75
   hard_cap_iterations: 10000
 
 crossover_config:
@@ -11,17 +11,17 @@ crossover_config:
 
 mutation_config:
   # Mutation rate for each individual or gene
-  rate: 0.2
+  rate: 0.3
   # Options are "gen" or "multi_gen"
   type: "multi_gen"
   # Delta for the mutation
-  delta: 15
+  delta: 30
 
 selection_config:
   # Options are "elite", "roulette", "universal", "boltzmann", "ranking", "probabilistic_tournament", "deterministic_tournament"
   type_1: "elite"
-  type_2: "roulette"
-  ratio_A: 0.5
+  type_2: "ranking"
+  ratio_A: 0.4
   # Boltzmann temperature
   initial_temperature: 30
   # Boltzmann temperature decay
@@ -37,7 +37,7 @@ replacement_config:
   # Options are "generational", "traditional" or "young_bias"
   type_1: "traditional"
   type_2: "young_bias"
-  ratio_B: 0.5
+  ratio_B: 0.3
   # Generational gap for the replacement
   gen_gap: 0.5
 

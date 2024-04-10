@@ -130,10 +130,11 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig, result_dir=
     algorithm_data = AlgorithmData(population, (current_best, 0))
     best = current_best, algorithm_data.generation
 
-    # iteration_best = (current_best, algorithm_data.generation)
-    # iteration_mean = (np.mean([x.performance for x in algorithm_data.population]), algorithm_data.generation)
-    # diversity = calculate_population_diversity(algorithm_data.population)
-    # algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean, "diversity": diversity})
+    iteration_best = (current_best, algorithm_data.generation)
+    iteration_mean = (np.mean([x.performance for x in algorithm_data.population]), algorithm_data.generation)
+    diversity = calculate_population_diversity(algorithm_data.population)
+    algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean, "diversity": diversity})
+
     algorithm_data.best = best
     while not should_end(algorithm_data.generation, algorithm_data.population, current_best, config.end_condition_config) and algorithm_data.generation < hard_cap:
         algorithm_data.generation += 1
@@ -143,6 +144,8 @@ def algorithm(population_to_keep, hard_cap, config: AlgorithmConfig, result_dir=
         iteration_mean = (np.mean([x.performance for x in algorithm_data.population]), algorithm_data.generation)
         diversity = calculate_population_diversity(algorithm_data.population)
         algorithm_data.last_iterations.append({"best": iteration_best, "mean": iteration_mean, "diversity": diversity})
+
+
         if current_best.performance > best[0].performance:
             best = current_best, algorithm_data.generation
             algorithm_data.best = best
