@@ -203,7 +203,7 @@ def show_best_evolution_one(filename):
         for generation in all_generations:
             generations_data[generation["generation"]] = (generation['best']['performance'], generation['best']['variables'])
 
-    plt.figure()
+    plt.figure()  # Adjust the size of the figure
     ax1 = plt.subplot()
     ax2 = ax1.twinx()
 
@@ -228,15 +228,15 @@ def show_best_evolution_one(filename):
     for variable, values in list(variables_by_generation.items())[-1:]:
         ax2.plot(list(generations_data.keys()), values, '--o', label=variable, color=colors[i]) 
 
-
-    plt.xlabel('Generation')
     ax1.set_ylabel('Attributes Values')
     ax2.set_ylabel('Height Values')
     lines, labels = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
     ax2.legend(lines + lines2, labels + labels2)
     plt.title('Best individual by generation')
-    plt.savefig(f'graphs/best_evolution_one_{class_names[CLASS_TO_USE_INDEX]}.png')
+    ax1.set_xlabel('Generation') 
+    plt.tight_layout()
+    plt.savefig(f'graphs/best_evolution_one_{class_names[CLASS_TO_USE_INDEX]}.png', bbox_inches='tight')
 
 
 def show_best_evolution(foldername):
@@ -297,13 +297,13 @@ def show_best_evolution(foldername):
             ax2.plot(list(generations_data.keys()), values, '--o', label=variable, color=colors[i]) 
 
 
-        plt.xlabel('Generation')
         ax1.set_ylabel('Attributes Values')
         ax2.set_ylabel('Height Values')
         lines, labels = ax1.get_legend_handles_labels()
         lines2, labels2 = ax2.get_legend_handles_labels()
         ax2.legend(lines + lines2, labels + labels2)
         plt.title(f'Best individual by generation for {class_name}')
+        ax1.set_xlabel('Generation')
         plt.savefig(f'graphs/best_evolution_{foldername}_{class_name}.png')
 
 
