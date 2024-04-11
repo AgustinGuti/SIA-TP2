@@ -178,17 +178,15 @@ def show_selection_combinations():
 
     # Create heatmap using seaborn
     plt.figure()
-    sns.heatmap(matrix, annot=True, fmt=".1f", cmap='YlGn', yticklabels=data_map.keys(), xticklabels=df['config.selection_ratio'].unique())
+    sns.heatmap(matrix, annot=True, fmt=".1f", cmap='YlGn', yticklabels=format_tuples(data_map.keys()), xticklabels=df['config.selection_ratio'].unique())
     plt.xlabel('Ratio')
     plt.ylabel('Selection combination')
     plt.title(f'Performance by selection combination for class {class_names[CLASS_TO_USE_INDEX]}')
     plt.savefig(f'graphs/performance_by_selection_combinations_{class_names[CLASS_TO_USE_INDEX]}.png')
-
-    # Now I want to create a graph for each combination, with the performance by generation
     
     for i, (key, value) in enumerate(data_map.items()):
         partial = df[(df['config.selection_config_a.selection_type'] == key[0]) & (df['config.selection_config_b.selection_type'] == key[1])]
-        _show_performance_by_attribute_from_data(partial, 'config', 'selection_ratio', 'ratio', only_diversity=True, extra_title=f'{key[0]} and {key[1]}')
+        _show_performance_by_attribute_from_data(partial, 'config', 'selection_ratio', 'ratio', only_diversity=True, extra_title=format_tuple(key))
 
 def show_best_evolution_one(filename):
 
@@ -309,6 +307,66 @@ def show_best_evolution(foldername):
         plt.savefig(f'graphs/best_evolution_{foldername}_{class_name}.png')
 
 
+def show_replacement_combinations():
+    results = []
+    for filename in glob.glob('results/performance_by_gen/replacement_config/*.json'):
+        with open (filename, 'r') as f:
+          results.append(json.load(f))
+
+    df = pd.DataFrame(results)
+    df = pd.json_normalize(results)
+
+    class_names = df['results.best.solution.class_name'].unique()
+    df = df[df['results.best.solution.class_name'] == class_names[CLASS_TO_USE_INDEX]]
+
+    df['config.replacement_ratio'] = df['config.replacement_config_a.quantity'] / df['config.population_to_keep']
+
+    data_map = {}
+    already_done_pairs = []
+    df = df.sort_values('config.replacement_ratio')
+
+    for i, replacement_type_a in enumerate(df['config.replacement_config_a.type'].unique()):
+        for j, replacement_type_b in enumerate(df['config.replacement_config_b.type'].unique()):
+            if replacement_type_a == replacement_type_b or (replacement_type_b, replacement_type_a) in already_done_pairs:
+                continue
+            has_data = False
+            data_map[(replacement_type_a, replacement_type_b)] = np.zeros((len(df['config.replacement_ratio'].unique())))
+
+            for k, ratio in enumerate(df['config.replacement_ratio'].unique()):
+                filtered = df[(df['config.replacement_config_a.type'] == replacement_type_a) & (df['config.replacement_config_b.type'] == replacement_type_b) & (df['config.replacement_ratio'] == ratio)]
+                if not np.isnan(filtered["results.best.solution.performance"].mean()):
+                    has_data = True
+                
+                data_map[(replacement_type_a, replacement_type_b)][k] = filtered['results.best.solution.performance'].mean()
+
+            if has_data:
+                already_done_pairs.append((replacement_type_a, replacement_type_b))
+            else:
+                data_map.pop((replacement_type_a, replacement_type_b))
+                
+    matrix = np.zeros((len(data_map), len(df['config.replacement_ratio'].unique())))
+    for i, (key, value) in enumerate(data_map.items()):
+        matrix[i] = value
+
+    # Create heatmap using seaborn
+    plt.figure()
+    sns.heatmap(matrix, annot=False, fmt=".3f", cmap='YlGn', yticklabels=format_tuples(data_map.keys()), xticklabels=df['config.replacement_ratio'].unique())
+    plt.xlabel('Ratio')
+    plt.ylabel('Replacement combination')
+    plt.title(f'Performance by replacement combination for class {class_names[CLASS_TO_USE_INDEX]}')
+    plt.savefig(f'graphs/performance_by_replacement_combinations_{class_names[CLASS_TO_USE_INDEX]}.png')
+    
+    for i, (key, value) in enumerate(data_map.items()):
+        partial = df[(df['config.replacement_config_a.type'] == key[0]) & (df['config.replacement_config_b.type'] == key[1])]
+        _show_performance_by_attribute_from_data(partial, 'config', 'replacement_ratio', 'ratio', only_diversity=True, extra_title=format_tuple(key))
+
+def format_tuples(t):
+    return [format_tuple(x) for x in t]
+
+def format_tuple(t):
+    t = t[0].replace('_', ' ').capitalize(), t[1].replace('_', ' ').capitalize()
+    return f'{t[0]} and {t[1]}'
+
 def main():
     matplotlib.use('TkAgg')
 
@@ -330,11 +388,9 @@ def main():
     if graph_config['show_algorithm']['by_population_to_keep']:
         show_performance_by_attribute('config', 'population_to_keep', 'population to keep', 'population_to_keep')
 
-    # TODO fix data and graphs
     if graph_config['show_replacement']:
-        show_performance_by_attribute('config.replacement_config_a', 'type', 'type', 'replacement_config')
+        show_replacement_combinations()
 
-    # TODO check implementation and result analysis. Something is off
     if graph_config['show_selection']['type']:
         show_performance_by_attribute('config.selection_config_a', 'selection_type', 'selection type')
 
@@ -355,30 +411,7 @@ def main():
 
     if graph_config['show_algorithm']['best_evolution']:
         show_best_evolution("best_evolution")
-        show_best_evolution_one("results/result_1.json")
-
-
-    # Done figures:
-    # - Mutation rate vs performance CHECK
-    # - Delta mutation vs performance CHECK
-    # - Performance by generation for each mutation type CHECK
-    # Best individual by generation CHECK
-    # For crossover:
-        # - Performance by generation for each crossover type DONE
-        # - Performance by crossover type DONE
-        # - Generations to reach best by crossover type DONE
-        
-
-    # TODO figures:
-    # Average performance by generation ADD WITH OTHER CONFIGS
-   
-    # For selection:
-        # - Performance by selections and ratio
-        # - Performance by temperature of boltzmann
-        # For both tournaments:
-            # - Performance by tournament size
-            # - Performance by threshold
-         
+        show_best_evolution_one("results/result_1.json")         
 
     plt.show()
 
