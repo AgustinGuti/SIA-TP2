@@ -27,7 +27,6 @@ def calculate_point():
 condition_functions = {
     "one_point": lambda x, point1, point2, length: x < point1,
     "two_point": lambda x, point1, point2, length: x < point1 or x > point2,
-    # TODO check if the probabilty must be in config
     "uniform": lambda x, point1, point2, length: np.random.rand() < UNIFORM_PROBABILTY,
     "annular": lambda x, point1, point2, length: not (x < point1 - (len(VARIABLES_ARRAY) - length) or x >= point1)
 }

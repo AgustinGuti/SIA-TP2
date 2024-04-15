@@ -48,14 +48,14 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
         plt.xlabel(attr_name.capitalize())
         plt.ylabel('Performance')
         plt.title(f'{attr_name.capitalize()} vs Performance for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
-        plt.savefig(f'graphs/performance_by_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
+        plt.savefig(f'graphs/performance_by_{attr}_{class_names[CLASS_TO_USE_INDEX]}{extra_title}.png')
 
         plt.figure()
         plt.errorbar(grouped.groups.keys(), grouped['results.best.generation'].mean(), yerr=grouped['results.best.generation'].std(), fmt='o', capsize=6)
         plt.xlabel(attr_name.capitalize())
         plt.ylabel('Generations')
         plt.title(f'Generations to reach best by {attr_name} for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
-        plt.savefig(f'graphs/generations_to_reach_best_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
+        plt.savefig(f'graphs/generations_to_reach_best_{attr}_{class_names[CLASS_TO_USE_INDEX]}{extra_title}.png')
 
     data_by_attr = {}
     for attr_type in filtered[f'{config}.{attr}'].unique():
@@ -75,7 +75,7 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
                 plt.ylabel('Performance')
                 plt.title(f'Performance by generation for class {class_names[CLASS_TO_USE_INDEX]} with {attr_type} {attr_name}{extra_title}')
                 plt.legend(['Best', 'Average'])
-                plt.savefig(f'graphs/performance_by_generation_{attr}_{attr_type}_{class_names[CLASS_TO_USE_INDEX]}.png')
+                plt.savefig(f'graphs/performance_by_generation_{attr}_{attr_type}_{class_names[CLASS_TO_USE_INDEX]}{extra_title}.png')
                 
 
         plt.figure()
@@ -87,7 +87,7 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
         legend = plt.legend(filtered[f'{config}.{attr}'].unique(), loc='upper right', bbox_to_anchor=(1,1))
         legend.set_title(f'{attr_name.capitalize()}')
         plt.tight_layout()
-        plt.savefig(f'graphs/performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
+        plt.savefig(f'graphs/performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}{extra_title}.png')
         
 
         plt.figure()
@@ -98,7 +98,7 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
         plt.title(f'Average performance by generation for class {class_names[CLASS_TO_USE_INDEX]}{extra_title}')
         legend = plt.legend(filtered[f'{config}.{attr}'].unique())
         legend.set_title(f'{attr_name.capitalize()}')
-        plt.savefig(f'graphs/average_performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
+        plt.savefig(f'graphs/average_performance_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}{extra_title}.png')
         
 
     # Plot diversity
@@ -113,7 +113,7 @@ def _show_performance_by_attribute_from_data(df, config, attr, attr_name, hide_i
     legends = [f'{x}' for i, x in enumerate(filtered[f'{config}.{attr}'].unique())]
     legend = plt.legend(legends)
     legend.set_title(f'{attr_name.capitalize()}')
-    plt.savefig(f'graphs/diversity_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}.png')
+    plt.savefig(f'graphs/diversity_by_generation_{attr}_{class_names[CLASS_TO_USE_INDEX]}{extra_title}.png')
     
 
 def show_performance_by_attribute(config, attr, attr_name, folder_name=None, hide_individual_graphs=True):
@@ -286,6 +286,15 @@ def show_best_evolution(foldername):
                 
         colors = ['b', 'r', 'g', 'c', 'm', 'y']
 
+        last_generation = list(generations_data.keys())[-1]
+
+        # Print the last generation
+        print(f'Class: {class_name}')
+        print(f'Generation: {last_generation}')
+        print(f'Performance: {generations_data[last_generation][0]}')
+        for variable, value in generations_data[last_generation][1].items():
+            print(f'Variable: {variable}, Last Value: {value}')
+
         i = 0
         ax1.plot(list(performance_by_generation.keys()), list(performance_by_generation.values()), linestyle=':', label='Performance', color='black')
 
@@ -386,7 +395,7 @@ def main():
         show_performance_by_attribute('config', 'population_size', 'population size')
 
     if graph_config['show_algorithm']['by_population_to_keep']:
-        show_performance_by_attribute('config', 'population_to_keep', 'population to keep', 'population_to_keep')
+        show_performance_by_attribute('config', 'population_to_keep', 'children', 'population_to_keep')
 
     if graph_config['show_replacement']:
         show_replacement_combinations()
@@ -406,12 +415,15 @@ def main():
     if graph_config['show_selection']['tournament_size']:
         show_performance_by_attribute('config.selection_config_a', 'tournament_size', 'tournament size', 'tournament_size')
 
+    if graph_config['show_selection']['tournament_threshold']:
+        show_performance_by_attribute('config.selection_config_a', 'threshold', 'threshold', 'tournament_threshold')
+
     if graph_config['show_selection']['combination']:
         show_selection_combinations()
 
     if graph_config['show_algorithm']['best_evolution']:
         show_best_evolution("best_evolution")
-        show_best_evolution_one("results/result_1.json")         
+        show_best_evolution_one("results/result_1.json")
 
     plt.show()
 

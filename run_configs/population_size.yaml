@@ -9,5 +9,5 @@ params_to_change:
       numeric: True
       numeric_value:
         min_value: 100
-        max_value: 2000
-        step: 100
+        max_value: 1000
+        step: 200

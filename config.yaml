@@ -2,7 +2,8 @@ algorithm_config:
   population_size: 500
   # Options are "warrior","archer","defender","assasin"
   class_name: "warrior"
-  population_to_keep: 0.75
+  # Children to generate in each generation, as percentage of the population
+  population_to_keep: 0.5
   hard_cap_iterations: 10000
 
 crossover_config:
@@ -14,14 +15,14 @@ mutation_config:
   rate: 0.3
   # Options are "gen" or "multi_gen"
   type: "multi_gen"
-  # Delta for the mutation
+  # Delta for the mutation. In the case of height, the delta is delta/100
   delta: 30
 
 selection_config:
   # Options are "elite", "roulette", "universal", "boltzmann", "ranking", "probabilistic_tournament", "deterministic_tournament"
   type_1: "elite"
   type_2: "ranking"
-  ratio_A: 0.4
+  ratio_A: 0.5
   # Boltzmann temperature
   initial_temperature: 30
   # Boltzmann temperature decay

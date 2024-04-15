@@ -1,0 +1,26 @@
+active: False
+output_dir: "results/performance_by_gen/tournament_threshold"
+class_names: ["warrior"]
+repetitions: 50
+params_to_change:
+  - param_to_change_group: "selection_config"
+    param_to_change_name: "type_1"
+    param_value:
+      numeric: False
+      categorical_values: ["probabilistic_tournament"]
+  - param_to_change_group: "selection_config"
+    param_to_change_name: "ratio_A"
+    param_value:
+      numeric: True
+      numeric_value:
+        min_value: 1
+        max_value: 1
+        step: 0.1
+  - param_to_change_group: "selection_config"
+    param_to_change_name: "tournament_threshold"
+    param_value:
+      numeric: True
+      numeric_value:
+        min_value: 0.5
+        max_value: 1
+        step: 0.1

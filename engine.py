@@ -11,7 +11,6 @@ import glob
 
 from tqdm import tqdm
 
-
 from common import Character, Variables, fix_variable_limit, VARIABLES_ARRAY, MAX_ATTRIBUTE_SUM
 from crossovers import crossover, CrossoverConfig
 from mutation import mutation, MutationConfig
